@@ -1,0 +1,274 @@
+<template>
+  <div>
+    <b-table-simple class="st" :borderless="borderless">
+      <!-- table header -->
+      <b-thead class="st-header">
+        <b-th>Level</b-th>
+        <b-th>SB</b-th>
+        <b-th>BB</b-th>
+        <b-th>Ante</b-th>
+        <b-th>Duration</b-th>
+      </b-thead>
+      <!-- table header -->
+
+      <!-- body -->
+      <b-tbody v-for="(n, idx) in r_strategy()" :key="n[idx]" class="tablebody">
+        <!-- level -->
+        <b-td class="t-info">{{ idx + 1 }}</b-td>
+        <!-- level -->
+
+        <!-- SB -->
+        <b-td class="t-info">
+          <button type="button" class="btn" @click="c_sbUp(idx)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <!-- {{ n[0] }} -->
+          <input
+            type="text"
+            class="strategy_input"
+            @input="c_sbInput($event.target.value)"
+            :value="n[0]"
+          >
+          <button type="button" class="btn" @click="c_sbDown(idx)">
+            <i class="fas fa-minus"></i>
+          </button>
+        </b-td>
+        <!-- SB -->
+
+        <!-- BB -->
+        <b-td class="t-info">
+          <button type="button" class="btn" @click="c_bbUp(idx)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <input
+            type="text"
+            class="strategy_input"
+            @input="c_sbInput($event.target.value)"
+            :value="n[1]"
+          >
+          <button type="button" class="btn" @click="c_bbDown(idx)">
+            <i class="fas fa-minus"></i>
+          </button>
+        </b-td>
+        <!-- BB -->
+
+        <!-- Ante -->
+        <b-td class="t-info">
+          <button type="button" class="btn" @click="c_anteUp(idx)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <input
+            type="text"
+            class="strategy_input"
+            @input="c_sbInput($event.target.value)"
+            :value="n[2]"
+          >
+          <button type="button" class="btn" @click="c_anteDown(idx)">
+            <i class="fas fa-minus"></i>
+          </button>
+        </b-td>
+        <!-- Ante -->
+
+        <!-- Duration -->
+        <b-td class="t-info">
+          <button type="button" class="btn" @click="c_durationUp(idx)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <input
+            type="text"
+            class="strategy_input"
+            @input="c_sbInput($event.target.value)"
+            :value="n[3]"
+          >min
+          <button type="button" class="btn" @click="c_durationDown(idx)">
+            <i class="fas fa-minus"></i>
+          </button>
+        </b-td>
+        <!-- Duration -->
+
+      </b-tbody>
+      <!-- body -->
+
+    </b-table-simple>
+    <div class="row">
+      <!-- lebel button -->
+      <div class="col-md-4 offset-md-2">
+        <button
+          type="button" class="strategy_btn" @click="c_strategyAdd()">
+          <i class="fas fa-plus"></i>
+        </button>
+        <span class="strategy_span" style="margin: 0 3.345px">LEVEL</span>
+        <button type="button" class="strategy_btn" @click="c_strategyRemove()">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+      <!-- lebel button -->
+      <!-- break button -->
+      <div class="col-md-4">
+        <button type="button" class="strategy_btn" @click="c_breakAdd()">
+          <i class="fas fa-plus"></i>
+        </button>
+        <span class="strategy_span">BREAK</span>
+        <button type="button" class="strategy_btn" @click="c_breakRemove()">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+      <!-- break button -->
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Table',
+  props: {},
+  data() {
+    var strategy = this.$store.state.strategy;
+    var level = this.$store.state.level;
+    return {
+      strategy,
+      level,
+      borderless: true,
+    }
+  },
+  methods: {
+    c_sbUp (idx) {
+      this.$store.commit('m_sbUp', idx);
+    },
+    c_sbInput (idx, input) {
+      this.$store.commit('m_sbInput', {
+        idx: idx,
+        input: input
+      });
+    },
+    c_sbDown (idx) {
+      this.$store.commit('m_sbDown', idx);
+    },
+    c_bbUp (idx) {
+      this.$store.commit('m_bbUp', idx);
+    },
+    c_bbDown (idx) {
+      this.$store.commit('m_bbDown', idx);
+    },
+    c_anteUp (idx) {
+      this.$store.commit('m_anteUp', idx);
+    },
+    c_anteDown (idx) {
+      this.$store.commit('m_anteDown', idx);
+    },
+    c_durationUp (idx) {
+      this.$store.commit('m_durationUp', idx);
+    },
+    c_durationDown (idx) {
+      this.$store.commit('m_durationDown', idx);
+    },
+    c_strategyAdd () {
+      // scrollBy(0, 138);
+      //レスポンシブにスクロールしたい
+      this.$store.commit('m_strategyAdd');
+    },
+    c_strategyRemove () {
+      //scrollBy(0, 138);
+      //レスポンシブにスクロールしたい
+      this.$store.commit('m_strategyRemove');
+    },
+    c_breakAdd () {
+      this.$store.commit('m_breakAdd');
+    },
+    c_breakRemove () {
+      this.$store.commit('m_breakRemove');
+    },
+    r_strategy () {
+      return this.$store.getters.g_strategy;
+    }
+  },
+}
+
+</script>
+
+<style lang="scss" scoped>
+.st {
+  .st-header {
+    color: #26a65b;
+    font-size: 20px;
+  }
+  th {
+    border-top: 1.5px solid #bbb;
+    border-bottom: 1.5px solid #bbb;
+    width: 20%;
+  }
+  td {
+    border-top: 1px solid #777;
+    border-bottom: 1px solid #777;
+  }
+  .tablebody {
+    color: #aaa;
+  }
+  .t-info {
+    font-size: 17px;
+    font-weight: 300;
+    padding: 20px 0;
+  }
+  .btn {
+    color: #26a65b;
+    font-size: 11px;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 3px 1px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    transition: 0.2s;
+    &:hover {
+      color: #111;
+      background: #26a65b;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  .strategy_input {
+    color: #aaa;
+    text-align: center;
+    width: 30px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    transition: 0.2s;
+    &:hover {
+      color: #26a65b;
+      border-bottom: 2px solid #26a65b;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+.strategy_btn {
+  color: #26a65b;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  padding-top: 5px;
+  margin: 20px 15px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  transition: 0.2s;
+  &:hover {
+    color: #111;
+    background: #26a65b;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+.strategy_span {
+  color: #26a65b;
+  font-size: 20px;
+  font-weight: 350;
+}
+</style>
