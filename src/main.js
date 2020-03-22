@@ -65,7 +65,7 @@ const store = new Vuex.Store({
     },
     m_sbInput (state, payload) {
       state.strategy[payload.idx][0] = payload.input;
-      console.log(state.strategy[idx][0]);
+      console.log(state.strategy[payload.idx][0]);
     },
     m_sbDown (state, idx) {
       if (state.strategy[idx][0] === 1) {
@@ -116,10 +116,12 @@ const store = new Vuex.Store({
     m_strategyRemove (state) {
       state.strategy.pop();
     },
-    m_breakAdd (state) {
-    },
-    m_breakRemove (state) {
-    },
+    // m_breakAdd (state) {
+    //
+    // },
+    // m_breakRemove (state) {
+    //
+    // },
     m_players (state, payload) {
       state.players = payload;
     },
