@@ -1,24 +1,8 @@
 # poker-timer
 
-## Project setup
+## deploy
 ```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
+sh deoloy.sh
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+https://okuxxbos20.github.io/sick-poker-timer/
