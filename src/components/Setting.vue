@@ -88,7 +88,7 @@ export default {
     r_total () {
       // const delimeter = new Intl.NumberFormat();
       const totalChips = this.$store.getters.g_total;
-      // return delimeter.format(totalChips);
+      // const total = delimeter.format(totalChips);
       return totalChips;
     },
     r_itm () {

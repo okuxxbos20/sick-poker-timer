@@ -22,12 +22,11 @@
           <button type="button" class="btn" @click="c_sbUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
-          <!-- {{ n[0] }} -->
           <input
             type="text"
             class="strategy_input"
-            @input="c_sbInput($event.target.value)"
-            :value="n[0]"
+            @input="c_sbInput(idx, $event.target.value)"
+            :value="r_strategy()[idx][0]"
           >
           <button type="button" class="btn" @click="c_sbDown(idx)">
             <i class="fas fa-minus"></i>
@@ -43,8 +42,8 @@
           <input
             type="text"
             class="strategy_input"
-            @input="c_sbInput($event.target.value)"
-            :value="n[1]"
+            @input="c_bbInput(idx, $event.target.value)"
+            :value="r_strategy()[idx][1]"
           >
           <button type="button" class="btn" @click="c_bbDown(idx)">
             <i class="fas fa-minus"></i>
@@ -60,8 +59,8 @@
           <input
             type="text"
             class="strategy_input"
-            @input="c_sbInput($event.target.value)"
-            :value="n[2]"
+            @input="c_anteInput(idx, $event.target.value)"
+            :value="r_strategy()[idx][2]"
           >
           <button type="button" class="btn" @click="c_anteDown(idx)">
             <i class="fas fa-minus"></i>
@@ -77,8 +76,8 @@
           <input
             type="text"
             class="strategy_input"
-            @input="c_sbInput($event.target.value)"
-            :value="n[3]"
+            @input="c_durationInput(idx, $event.target.value)"
+            :value="r_strategy()[idx][3]"
           >min
           <button type="button" class="btn" @click="c_durationDown(idx)">
             <i class="fas fa-minus"></i>
@@ -149,17 +148,35 @@ export default {
     c_bbUp (idx) {
       this.$store.commit('m_bbUp', idx);
     },
+    c_bbInput (idx, input) {
+      this.$store.commit('m_bbInput', {
+        idx: idx,
+        input: input
+      });
+    },
     c_bbDown (idx) {
       this.$store.commit('m_bbDown', idx);
     },
     c_anteUp (idx) {
       this.$store.commit('m_anteUp', idx);
     },
+    c_anteInput (idx, input) {
+      this.$store.commit('m_bbInput', {
+        idx: idx,
+        input: input
+      });
+    },
     c_anteDown (idx) {
       this.$store.commit('m_anteDown', idx);
     },
     c_durationUp (idx) {
       this.$store.commit('m_durationUp', idx);
+    },
+    c_durationInput (idx, input) {
+      this.$store.commit('m_bbInput', {
+        idx: idx,
+        input: input
+      });
     },
     c_durationDown (idx) {
       this.$store.commit('m_durationDown', idx);
