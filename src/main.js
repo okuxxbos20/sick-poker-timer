@@ -66,7 +66,6 @@ const store = new Vuex.Store({
     },
     m_sbInput (state, payload) {
       state.strategy[payload.idx][0] = payload.input;
-      console.log(state.strategy[payload.idx][0]);
     },
     m_sbDown (state, idx) {
       if (state.strategy[idx][0] === 1) {
@@ -74,13 +73,13 @@ const store = new Vuex.Store({
       } else {
         state.strategy[idx][0] --;
       }
+      console.log(state.strategy[idx][0]);
     },
     m_bbUp (state, idx) {
       state.strategy[idx][1] ++;
     },
     m_bbInput (state, payload) {
       state.strategy[payload.idx][1] = payload.input;
-      console.log(state.strategy[payload.idx][1]);
     },
     m_bbDown (state, idx) {
       if (state.strategy[idx][1] === 1) {
@@ -94,7 +93,6 @@ const store = new Vuex.Store({
     },
     m_anteInput (state, payload) {
       state.strategy[payload.idx][2] = payload.input;
-      console.log(state.strategy[payload.idx][2]);
     },
     m_anteDown (state, idx) {
       if (state.strategy[idx][2] === 0) {
@@ -108,7 +106,6 @@ const store = new Vuex.Store({
     },
     m_durationInput (state, payload) {
       state.strategy[payload.idx][3] = payload.input;
-      console.log(state.strategy[payload.idx][3]);
     },
     m_durationDown (state, idx) {
       if (state.strategy[idx][3] === 0) {

@@ -200,7 +200,7 @@ export default {
     r_strategy () {
       return this.$store.getters.g_strategy;
     }
-  },
+  }
 }
 
 </script>
