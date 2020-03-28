@@ -12,7 +12,7 @@
       <!-- table header -->
 
       <!-- body -->
-      <b-tbody v-for="(n, idx) in r_strategy()" :key="n[idx]" class="tablebody">
+      <b-tbody v-for="(n, idx) in r_strategy" :key="n[idx]" class="tablebody">
         <!-- level -->
         <b-td class="t-info">{{ idx + 1 }}</b-td>
         <!-- level -->
@@ -26,7 +26,7 @@
             type="text"
             class="strategy_input"
             @input="c_sbInput(idx, $event.target.value)"
-            :value="r_strategy()[idx][0]"
+            v-model="r_strategy[idx][0]"
           >
           <button type="button" class="btn" @click="c_sbDown(idx)">
             <i class="fas fa-minus"></i>
@@ -43,7 +43,7 @@
             type="text"
             class="strategy_input"
             @input="c_bbInput(idx, $event.target.value)"
-            :value="r_strategy()[idx][1]"
+            :value="r_strategy[idx][1]"
           >
           <button type="button" class="btn" @click="c_bbDown(idx)">
             <i class="fas fa-minus"></i>
@@ -60,7 +60,7 @@
             type="text"
             class="strategy_input"
             @input="c_anteInput(idx, $event.target.value)"
-            :value="r_strategy()[idx][2]"
+            :value="r_strategy[idx][2]"
           >
           <button type="button" class="btn" @click="c_anteDown(idx)">
             <i class="fas fa-minus"></i>
@@ -77,7 +77,7 @@
             type="text"
             class="strategy_input"
             @input="c_durationInput(idx, $event.target.value)"
-            :value="r_strategy()[idx][3]"
+            :value="r_strategy[idx][3]"
           >min
           <button type="button" class="btn" @click="c_durationDown(idx)">
             <i class="fas fa-minus"></i>
@@ -124,11 +124,7 @@ export default {
   name: 'Table',
   props: {},
   data() {
-    var strategy = this.$store.state.strategy;
-    var level = this.$store.state.level;
     return {
-      strategy,
-      level,
       borderless: true,
     }
   },
@@ -137,9 +133,10 @@ export default {
       this.$store.commit('m_sbUp', idx);
     },
     c_sbInput (idx, input) {
+      const num = Number(input);
       this.$store.commit('m_sbInput', {
         idx: idx,
-        input: input
+        input: num
       });
     },
     c_sbDown (idx) {
@@ -149,9 +146,10 @@ export default {
       this.$store.commit('m_bbUp', idx);
     },
     c_bbInput (idx, input) {
+      const num = Number(input);
       this.$store.commit('m_bbInput', {
         idx: idx,
-        input: input
+        input: num
       });
     },
     c_bbDown (idx) {
@@ -161,9 +159,10 @@ export default {
       this.$store.commit('m_anteUp', idx);
     },
     c_anteInput (idx, input) {
-      this.$store.commit('m_bbInput', {
+      const num = Number(input);
+      this.$store.commit('m_anteInput', {
         idx: idx,
-        input: input
+        input: num
       });
     },
     c_anteDown (idx) {
@@ -173,9 +172,10 @@ export default {
       this.$store.commit('m_durationUp', idx);
     },
     c_durationInput (idx, input) {
-      this.$store.commit('m_bbInput', {
+      const num = Number(input);
+      this.$store.commit('m_durationInput', {
         idx: idx,
-        input: input
+        input: num
       });
     },
     c_durationDown (idx) {
@@ -196,8 +196,13 @@ export default {
     },
     c_breakRemove () {
       this.$store.commit('m_breakRemove');
-    },
-    r_strategy () {
+    }
+    // r_strategy () {
+    //   return this.$store.getters.g_strategy;
+    // }
+  },
+  computed: {
+    r_strategy: function () {
       return this.$store.getters.g_strategy;
     }
   }
@@ -239,12 +244,12 @@ export default {
     border: none;
     background: transparent;
     transition: 0.2s;
+    &:focus {
+      outline: none;
+    }
     &:hover {
       color: #111;
       background: #26a65b;
-    }
-    &:focus {
-      outline: none;
     }
   }
   .strategy_input {

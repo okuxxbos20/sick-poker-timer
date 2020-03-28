@@ -61,57 +61,56 @@ const store = new Vuex.Store({
       state.duration -= 60;
     },
     m_sbUp (state, idx) {
-      state.strategy[idx][0] ++;
-      console.log(state.strategy[idx][0]);
+      state.strategy[idx].splice(0, 1, state.strategy[idx][0]+1);
     },
     m_sbInput (state, payload) {
       state.strategy[payload.idx][0] = payload.input;
     },
     m_sbDown (state, idx) {
       if (state.strategy[idx][0] === 1) {
-        state.strategy[idx][0] = 1;
+        state.strategy[idx].splice(0, 1, 1);
       } else {
-        state.strategy[idx][0] --;
+        state.strategy[idx].splice(0, 1, state.strategy[idx][0]-1);
       }
       console.log(state.strategy[idx][0]);
     },
     m_bbUp (state, idx) {
-      state.strategy[idx][1] ++;
+      state.strategy[idx].splice(1, 1, state.strategy[idx][1]+1);
     },
     m_bbInput (state, payload) {
       state.strategy[payload.idx][1] = payload.input;
     },
     m_bbDown (state, idx) {
       if (state.strategy[idx][1] === 1) {
-        state.strategy[idx][1] = 1;
+        state.strategy[idx].splice(1, 1, 1);
       } else {
-        state.strategy[idx][1] --;
+        state.strategy[idx].splice(1, 1, state.strategy[idx][1]-1);
       }
     },
     m_anteUp (state, idx) {
-      state.strategy[idx][2] ++;
+      state.strategy[idx].splice(2, 1, state.strategy[idx][2]+1);
     },
     m_anteInput (state, payload) {
       state.strategy[payload.idx][2] = payload.input;
     },
     m_anteDown (state, idx) {
       if (state.strategy[idx][2] === 0) {
-        state.strategy[idx][2] = 0;
+        state.strategy[idx].splice(2, 1, 0);
       } else {
-        state.strategy[idx][2] --;
+        state.strategy[idx].splice(2, 1, state.strategy[idx][2]-1);
       }
     },
     m_durationUp (state, idx) {
-      state.strategy[idx][3] ++;
+      state.strategy[idx].splice(3, 1, state.strategy[idx][3]+1);
     },
     m_durationInput (state, payload) {
       state.strategy[payload.idx][3] = payload.input;
     },
     m_durationDown (state, idx) {
       if (state.strategy[idx][3] === 0) {
-        state.strategy[idx][3] = 0;
+        state.strategy[idx].splice(3, 1, 0);
       } else {
-        state.strategy[idx][3] --;
+        state.strategy[idx].splice(3, 1, state.strategy[idx][3]-1);
       }
     },
     m_strategyAdd (state) {
