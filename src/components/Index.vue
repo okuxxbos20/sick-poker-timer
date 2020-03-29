@@ -41,25 +41,16 @@ import Setting from './Setting.vue';
 export default {
   components: { Timer, Infomation, Setting },
   data() {
-    var strategy = this.$store.state.strategy;
-    var status = this.$store.state.status;
-    var level = this.$store.state.level;
-    var players = this.$store.state.players;
-    var total = this.$store.state.total;
-    var itm = this.$store.state.itm;
-    return {
-      strategy,
-      status,
-      level,
-      players,
-      total,
-      itm,
-    }
+    var strategy = this.$store.getters.strategy;
+    var level = this.$store.getters.level;
+    return { strategy, level }
   },
-  filters: {
-    numDelimiter: function (n) {
-      if (!n) {
-        return '0';
+  watch: {
+    audioPlay: function() {
+      var audio = new Audio('../assets/sound_01.mp3');
+      if (this.$store.state.strategy[this.$store.state.level-1][3] === 5) {
+        console.log('play audio!@watch!');
+        audio.play();
       }
     }
   },
@@ -78,9 +69,10 @@ export default {
     },
     r_status() {
       return this.$store.getters.g_status;
+    },
+    r_strategy () {
+      return this.$store.getters.g_strategy;
     }
-  },
-  created() {
   }
 }
 </script>

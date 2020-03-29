@@ -8,7 +8,7 @@
     </span>
     <p class="nextbb">NEXT BLINDS :
       <span>
-        {{ this.strategy[this.level][0] }}/{{ this.strategy[this.level][1] }}
+        {{ r_strategy()[r_level()][0] }}/{{ r_strategy()[r_level()][1] }}
       </span>
     </p>
   </div>
@@ -19,14 +19,7 @@ export default {
   name: 'Timer',
   props: {},
   data() {
-    var duration = this.$store.state.duration;
-    var strategy = this.$store.state.strategy;
-    var level = this.$store.state.level;
-    return {
-      duration,
-      strategy,
-      level,
-    }
+    return {};
   },
   methods: {
     r_timer () {

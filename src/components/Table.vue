@@ -77,7 +77,7 @@
             type="text"
             class="strategy_input"
             @input="c_durationInput(idx, $event.target.value)"
-            :value="r_strategy[idx][3]"
+            :value="r_strategy[idx][3]/60"
           >min
           <button type="button" class="btn" @click="c_durationDown(idx)">
             <i class="fas fa-minus"></i>

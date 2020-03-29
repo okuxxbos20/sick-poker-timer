@@ -13,19 +13,18 @@ Vue.use(BootstrapVue);
 
 const store = new Vuex.Store({
   state: {
-    duration: 60 * 10,
     status: false,
     strategy: [
       [1, 2, 0, 10],
-      [5, 10, 0, 10],
-      [10, 20, 0, 10],
-      [20, 40, 0, 10],
-      [30, 60, 0, 10],
-      [40, 80, 0, 10],
-      [50, 100, 0, 10],
-      [100, 200, 0, 10],
-      [150, 300, 0, 10],
-      [200, 400, 0, 10]
+      [5, 10, 0, 600],
+      [10, 20, 0, 600],
+      [20, 40, 0, 600],
+      [30, 60, 0, 600],
+      [40, 80, 0, 600],
+      [50, 100, 0, 600],
+      [100, 200, 0, 600],
+      [150, 300, 0, 600],
+      [200, 400, 0, 600]
     ],
     break: [10, 'min break'],
     level: 1,
@@ -37,11 +36,15 @@ const store = new Vuex.Store({
   mutations: {
     m_startTimer (state) {
       state.timer = setInterval(() => {
-        if (state.duration <= 0) {
-          state.duration = 601;
+        // if (state.strategy[state.level-1][3] === 5) {
+        //   console.log('play audio!');
+        //   audio.play();
+        // }
+        if (state.strategy[state.level-1][3] <= 0) {
           state.level ++;
         }
-        state.duration --;
+        state.strategy[state.level-1].splice(3, 1, state.strategy[state.level-1][3]-1);
+        console.log(state.strategy[state.level-1][3]);
       }, 1000);
       state.status = !state.status ? true : false;
     },
@@ -51,14 +54,13 @@ const store = new Vuex.Store({
       state.status = !state.status ? true : false;
     },
     m_counterUp (state) {
-      state.duration += 60;
+      state.strategy[state.level-1].splice(3, 1, state.strategy[state.level-1][3]+60);
     },
     m_counterDown (state) {
-      if (state.duration <= 0) {
-        state.duration = 660;
+      if (state.strategy[state.level-1][3] <= 0) {
         state.level ++;
       }
-      state.duration -= 60;
+      state.strategy[state.level-1].splice(3, 1, state.strategy[state.level-1][3]-60);
     },
     m_sbUp (state, idx) {
       state.strategy[idx].splice(0, 1, state.strategy[idx][0]+1);
@@ -101,7 +103,7 @@ const store = new Vuex.Store({
       }
     },
     m_durationUp (state, idx) {
-      state.strategy[idx].splice(3, 1, state.strategy[idx][3]+1);
+      state.strategy[idx].splice(3, 1, state.strategy[idx][3]+60);
     },
     m_durationInput (state, payload) {
       state.strategy[payload.idx][3] = payload.input;
@@ -110,7 +112,7 @@ const store = new Vuex.Store({
       if (state.strategy[idx][3] === 0) {
         state.strategy[idx].splice(3, 1, 0);
       } else {
-        state.strategy[idx].splice(3, 1, state.strategy[idx][3]-1);
+        state.strategy[idx].splice(3, 1, state.strategy[idx][3]-60);
       }
     },
     m_strategyAdd (state) {
@@ -149,8 +151,9 @@ const store = new Vuex.Store({
   },
   getters: {
     g_timer: function (state) {
-      var min = Math.floor(state.duration / 60);
-      var sec = state.duration - min * 60;
+      var currentDuration = state.strategy[state.level-1][3];
+      var min = Math.floor(currentDuration / 60);
+      var sec = currentDuration - min * 60;
       min = min < 10 ? '0' + min : min;
       sec = sec < 10 ? '0' + sec : sec;
       return { min, sec };
