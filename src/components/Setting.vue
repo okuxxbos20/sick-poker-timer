@@ -2,8 +2,8 @@
   <div class="docs container">
 
     <div class="part setting">
-      <h3 class="h" v-if="this.lang">Strategy Setting</h3>
-      <h3 class="h ja" v-if="!this.lang">設定</h3>
+      <h3 class="h" v-if="this.lang">Strategy Setting 💻</h3>
+      <h3 class="h ja" v-if="!this.lang">設定 💻</h3>
       <p class="p" v-if="this.lang">Vue (pronounced /vjuː/, like view) is a progressive framework for building user interfaces. Unlike other monolithic frameworks, Vue is designed from the ground up to be incrementally adoptable.
       <button type="button" class="langchange" v-if="this.lang" @click="langSwitch()">日本語</button>
       <p class="p ja" v-if="!this.lang">ハンドラ関数は状態を第1引数として取得し、状態の変更を行います。また、仮引数を追加することもできます。下記で仮引数を追加してみます。状態（state）の更新をしてみましょう。まず、覚えておく必要があるのは、ミューテーションは直接呼び出せないということです。つまり、のように使うことはできません。
@@ -46,8 +46,8 @@
     </div>
 
     <div class="part getintouch">
-      <h3 class="h" v-if="this.lang">Get In Touch</h3>
-      <h3 class="h ja" v-if="!this.lang">コンタクト</h3>
+      <h3 class="h" v-if="this.lang">Get In Touch 📮</h3>
+      <h3 class="h ja" v-if="!this.lang">コンタクト 📮</h3>
       <p class="p" v-if="this.lang">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
       <p class="p ja" v-if="!this.lang">改善点や要望があれば以下のアカウントからDMでお願いします。</p>
       <a href="#"><i class="fab fa-twitter sns"></i></a>
