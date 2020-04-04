@@ -15,7 +15,7 @@ const store = new Vuex.Store({
   state: {
     status: false,
     strategy: [
-      [1, 2, 0, 10],
+      [1, 2, 0, 600],
       [5, 10, 0, 600],
       [10, 20, 0, 600],
       [20, 40, 0, 600],
