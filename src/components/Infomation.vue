@@ -3,7 +3,7 @@
 
     <div class="infomation row">
       <!-- players left -->
-      <p class="info col-md-4">Players Left :
+      <p class="info col-sm-4">Players :
         <button @click="playersUp()" type="button">
           <i class="fas fa-plus"></i>
         </button>
@@ -17,13 +17,13 @@
       <!-- players left -->
 
       <!-- avg -->
-      <p class="info col-md-4">AVG Stack :
+      <p class="info col-sm-4">AVG Stack :
         <span>${{ average_counter() }}</span>
       </p>
       <!-- avg -->
 
       <!-- In The Money -->
-      <p class="info col-md-4">In The Money :
+      <p class="info col-sm-4">In The Money :
         <span>{{ r_itm() }}</span>
       </p>
       <!-- In The Money -->
