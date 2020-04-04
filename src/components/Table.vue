@@ -1,18 +1,23 @@
 <template>
   <div>
-    <b-table-simple class="st" :borderless="borderless">
+    <b-table-simple responsive class="st" :borderless="borderless">
       <!-- table header -->
       <b-thead class="st-header">
         <b-th>Level</b-th>
-        <b-th>SB</b-th>
-        <b-th>BB</b-th>
+        <b-th>Small Blind</b-th>
+        <b-th>Big Blind</b-th>
         <b-th>Ante</b-th>
         <b-th>Duration</b-th>
       </b-thead>
       <!-- table header -->
 
       <!-- body -->
-      <b-tbody v-for="(n, idx) in r_strategy" :key="n[idx]" class="tablebody">
+      <b-tbody
+        v-for="(n, idx) in r_strategy"
+        :key="n[idx]"
+        class="tablebody"
+        style="margin: 10px 0;"
+      >
         <!-- level -->
         <b-td class="t-info">{{ idx + 1 }}</b-td>
         <!-- level -->
@@ -89,6 +94,7 @@
       <!-- body -->
 
     </b-table-simple>
+
     <div class="row">
       <!-- lebel button -->
       <div class="col-md-4 offset-md-2">
@@ -215,11 +221,13 @@ export default {
   .st-header {
     color: #26a65b;
     font-size: 20px;
+    vertical-align: middle;
   }
   th {
     border-top: 1.5px solid #bbb;
     border-bottom: 1.5px solid #bbb;
     width: 20%;
+    vertical-align: middle;
   }
   td {
     border-top: 1px solid #777;
@@ -231,7 +239,9 @@ export default {
   .t-info {
     font-size: 17px;
     font-weight: 300;
-    padding: 20px 0;
+    padding: 18px 0;
+    margin: 10px;
+    vertical-align: middle;
   }
   .btn {
     color: #26a65b;
