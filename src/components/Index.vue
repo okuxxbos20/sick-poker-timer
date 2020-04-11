@@ -45,15 +45,6 @@ export default {
     var level = this.$store.getters.level;
     return { strategy, level }
   },
-  watch: {
-    audioPlay: function() {
-      var audio = new Audio('../assets/sound_01.mp3');
-      if (this.$store.state.strategy[this.$store.state.level-1][3] === 5) {
-        console.log('play audio!@watch!');
-        audio.play();
-      }
-    }
-  },
   methods: {
     c_counterUp() {
       this.$store.commit('m_counterUp');
@@ -79,7 +70,7 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  padding: 0;
+  padding: 40px 0 0 0;
   background: #111;
   .controller {
     .ctr {
