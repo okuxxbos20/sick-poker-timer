@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table-simple responsive class="st" :borderless="borderless">
+    <b-table-simple responsive class="st">
       <!-- table header -->
       <b-thead class="st-header">
         <b-th>Level</b-th>
@@ -17,13 +17,14 @@
         :key="n[idx]"
         class="tablebody"
         style="margin: 10px 0;"
+        row
       >
         <!-- level -->
         <b-td class="t-info">{{ idx + 1 }}</b-td>
         <!-- level -->
 
         <!-- SB -->
-        <b-td class="t-info">
+        <b-td class="t-info col-2">
           <button type="button" class="btn" @click="c_sbUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -40,7 +41,7 @@
         <!-- SB -->
 
         <!-- BB -->
-        <b-td class="t-info">
+        <b-td class="t-info col-2">
           <button type="button" class="btn" @click="c_bbUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -57,7 +58,7 @@
         <!-- BB -->
 
         <!-- Ante -->
-        <b-td class="t-info">
+        <b-td class="t-info col-2">
           <button type="button" class="btn" @click="c_anteUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -74,7 +75,7 @@
         <!-- Ante -->
 
         <!-- Duration -->
-        <b-td class="t-info">
+        <b-td class="t-info col-2">
           <button type="button" class="btn" @click="c_durationUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -128,7 +129,6 @@
 <script>
 export default {
   name: 'Table',
-  props: {},
   data() {
     return {
       borderless: true,
@@ -231,17 +231,19 @@ export default {
   }
   td {
     border-top: 1px solid #777;
-    border-bottom: 1px solid #777;
   }
   .tablebody {
     color: #aaa;
+    border-bottom: 1px solid #777;
   }
   .t-info {
     font-size: 17px;
     font-weight: 300;
+    width: 100px;
     padding: 18px 0;
     margin: 10px;
     vertical-align: middle;
+    border: none;
   }
   .btn {
     color: #26a65b;
@@ -254,9 +256,7 @@ export default {
     border: none;
     background: transparent;
     transition: 0.2s;
-    &:focus {
-      outline: none;
-    }
+    &:focus { outline: none; }
     &:hover {
       color: #111;
       background: #26a65b;
@@ -270,12 +270,10 @@ export default {
     border: none;
     border-bottom: 2px solid transparent;
     transition: 0.2s;
+    &:focus { outline: none; }
     &:hover {
       color: #26a65b;
       border-bottom: 2px solid #26a65b;
-    }
-    &:focus {
-      outline: none;
     }
   }
 }
