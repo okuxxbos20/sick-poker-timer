@@ -48,7 +48,6 @@ const store = new Vuex.Store({
           state.level ++;
         }
         state.strategy[state.level-1].splice(3, 1, state.strategy[state.level-1][3]-1);
-        console.log(state.strategy[state.level-1][3]);
       }, 1000);
       state.status = !state.status ? true : false;
     },
