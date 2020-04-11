@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-table-simple responsive class="st">
+    <b-table-simple responsive class="st" borderless>
       <!-- table header -->
       <b-thead class="st-header">
         <b-th>Level</b-th>
