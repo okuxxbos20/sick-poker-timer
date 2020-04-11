@@ -37,9 +37,7 @@ html {
 
 a {
   text-decoration: none;
-  &:hover {
-    text-decoration: none;
-  }
+  &:hover { text-decoration: none;}
 }
 
 .ja {
