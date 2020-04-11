@@ -1,11 +1,13 @@
 <template>
   <div class="timer">
-    <span class="flame">
-      <p class="part time">{{ r_timer().min }} : {{ r_timer().sec }}</p>
-      <h6 class="part level">LEVEL {{ r_level() }}</h6>
-      <h6 class="part blinds">BLINDS</h6>
-      <h6 class="part sbbb">{{ r_strategy()[r_level()-1][0] }}/{{ r_strategy()[r_level()-1][1] }}</h6>
-    </span>
+    <div class="circle" :class="{ circle_animation: r_status() }">
+      <span class="flame">
+        <p class="part time">{{ r_timer().min }} : {{ r_timer().sec }}</p>
+        <h6 class="part level">LEVEL {{ r_level() }}</h6>
+        <h6 class="part blinds">BLINDS</h6>
+        <h6 class="part sbbb">{{ r_strategy()[r_level()-1][0] }}/{{ r_strategy()[r_level()-1][1] }}</h6>
+      </span>
+    </div>
     <p class="nextbb">NEXT BLINDS :
       <span>
         {{ r_strategy()[r_level()][0] }}/{{ r_strategy()[r_level()][1] }}
@@ -17,11 +19,13 @@
 <script>
 export default {
   name: 'Timer',
-  props: {},
   data() {
     return {};
   },
   methods: {
+    r_status() {
+      return this.$store.getters.g_status;
+    },
     r_timer () {
       return this.$store.getters.g_timer;
     },
@@ -36,14 +40,82 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flame {
-  width: 390px;
-  height: 390px;
-  margin: 40px 0 0 0;
-  display: inline-block;
-  border: 15px solid #26a65b;
-  border-radius: 50%;
+// inserted css by vue
+.circle_animation {
+  &:before { animation: rotate-circle-left 600s linear infinite; }
+  &:after { animation: rotate-circle-right 600s linear infinite; }
+}
+
+.circle {
   position: relative;
+  margin: 0 auto;
+  width: 400px;
+  height: 400px;
+  background: #111;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 1;
+    // left
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -200px;
+    width: 400px;
+    height: 400px;
+    background: #26a65b;
+    // background: linear-gradient(45deg, #26a65b, #111);
+    transform-origin: right 200px;
+    z-index: 2;
+  }
+  // right
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 200px;
+    width: 400px;
+    height: 400px;
+    background: #26a65b;
+    // background: linear-gradient(45deg, #111, #26a65b);
+    transform-origin: left 200px;
+    z-index: 3;
+  }
+  @keyframes rotate-circle-right {
+    0% {
+      transform: rotate(0deg);
+      background: #26a65b;
+    }
+    50%  {
+      transform: rotate(180deg);
+      background: #26a65b;
+    }
+    50.01% {
+      transform: rotate(360deg);
+      background: #111;
+    }
+    100% {
+      transform: rotate(360deg);
+      background: #111;
+    }
+  }
+  @keyframes rotate-circle-left {
+    0%   { transform: rotate(0deg); }
+    50%  { transform: rotate(0deg); }
+    100% { transform: rotate(180deg); }
+  }
+}
+.flame {
+  width: 380px;
+  height: 380px;
+  margin: 10px 0 0 0;
+  background: #111;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  z-index: 4;
   .part {
     width: 100%;
     position: absolute;
