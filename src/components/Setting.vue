@@ -3,12 +3,13 @@
 
     <div class="part setting">
       <h3 class="h" v-if="this.lang">Strategy Setting 💻</h3>
-      <h3 class="h ja" v-if="!this.lang">設定 💻</h3>
-      <p class="p" v-if="this.lang">Vue (pronounced /vjuː/, like view) is a progressive framework for building user interfaces. Unlike other monolithic frameworks, Vue is designed from the ground up to be incrementally adoptable.
-      <button type="button" class="langchange" v-if="this.lang" @click="langSwitch()">日本語</button>
+      <!-- <h3 class="h ja" v-if="!this.lang">設定 💻</h3> -->
+      <p class="p" v-if="this.lang">You can change the setting freely by operating the table below.
+      </p>
+      <!-- <button type="button" class="langchange" v-if="this.lang" @click="langSwitch()">日本語</button>
       <p class="p ja" v-if="!this.lang">ハンドラ関数は状態を第1引数として取得し、状態の変更を行います。また、仮引数を追加することもできます。下記で仮引数を追加してみます。状態（state）の更新をしてみましょう。まず、覚えておく必要があるのは、ミューテーションは直接呼び出せないということです。つまり、のように使うことはできません。
       <button type="button" class="langchange" v-if="!this.lang" @click="langSwitch()">English</button>
-      </p>
+      </p> -->
 
       <!-- controller -->
       <div class="st-initial row justify-content-center">
@@ -39,13 +40,13 @@
 
     <Color/>
 
-    <div class="part howto">
+    <!-- <div class="part howto">
       <h3 class="h" v-if="this.lang">How To</h3>
       <h3 class="h ja" v-if="!this.lang">使い方</h3>
       <p class="p" v-if="this.lang">Vue (pronounced /vjuː/, like view) is a progressive framework for building user interfaces. Unlike other monolithic frameworks, Vue is designed from the ground up to be incrementally adoptable. The core library is focused on the view layer only, and is easy to pick up and integrate with other libraries or existing projects. On the other hand, Vue is also perfectly capable of powering sophisticated Single-Page Applications when used in combination with modern tooling and supporting libraries.</p>
-      <p class="p ja" v-if="!this.lang">ハンドラ関数は状態を第1引数として取得し、状態の変更を行います。また、仮引数を追加することもできます。下記で仮引数を追加してみます。状態（state）の更新をしてみましょう。まず、覚えておく必要があるのは、ミューテーションは直接呼び出せないということです。つまり、のように使うことはできません。
+      <p class="p ja" v-if="!this.lang">以下のテーブルでトーナメントの進行を設定できます。レベルの追加はテーブル下のボタンで追加できます。また、色
       </p>
-    </div>
+    </div> -->
 
     <div class="part getintouch">
       <h3 class="h" v-if="this.lang">Get In Touch 📮</h3>
