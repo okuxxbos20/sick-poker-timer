@@ -36,7 +36,10 @@ main {
     border-radius: 50%;
     margin: 10px;
     transition: 0.2s;
-    &:hover { transform: scale(1.1); }
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.3);
+    }
   }
   .red { background: #f03434; }
   .green { background: #26a65b; }
