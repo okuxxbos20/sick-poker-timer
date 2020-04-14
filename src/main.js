@@ -14,6 +14,36 @@ Vue.use(BootstrapVue);
 const store = new Vuex.Store({
   state: {
     status: false,
+    theme: {
+      redTheme: {
+        color: '#f03434',
+        isSelected: false
+      },
+      greenTheme: {
+        color: '#26a65b',
+        isSelected: true
+      },
+      blueTheme: {
+        color: '#00b5cc',
+        isSelected: false
+      },
+      purpleTheme: {
+        color: '#9a12b3',
+        isSelected: false
+      },
+      yellowTheme: {
+        color: '#f7ca18',
+        isSelected: false
+      },
+      orangeTheme: {
+        color: '#e67e22',
+        isSelected: false
+      },
+      greyTheme: {
+        color: '#dadfe1',
+        isSelected: false
+      }
+    },
     strategy: [
       [1, 2, 0, 600],
       [5, 10, 0, 600],

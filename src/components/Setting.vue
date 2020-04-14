@@ -37,6 +37,8 @@
       <Table/>
     </div>
 
+    <Color/>
+
     <div class="part howto">
       <h3 class="h" v-if="this.lang">How To</h3>
       <h3 class="h ja" v-if="!this.lang">使い方</h3>
@@ -59,11 +61,12 @@
 
 <script>
 import Table from './Table.vue';
+import Color from './Color.vue';
 
 export default {
   name: 'Setting',
   props: {},
-  components: { Table },
+  components: { Table, Color },
   data() {
     return {
       lang: true,//true->'en', false->'ja'
@@ -116,19 +119,15 @@ export default {
   }
   .langchange {
     font-size: 12px;
-    color: #26a65b;
+    color: var(--currentTheme);
     background: transparent;
     border: none;
     border-bottom: 2px solid #111;
-    &:focus {
-      outline: none;
-    }
-    &:hover {
-      border-bottom: 2px solid #26a65b;
-    }
+    &:focus { outline: none; }
+    &:hover { border-bottom: 2px solid var(--currentTheme); }
   }
   .part {
-    margin: 0 0 75px;
+    margin-bottom: 40px;
     .st-initial {
       color: #aaa;
       margin-top: 40px;
@@ -138,22 +137,18 @@ export default {
         border: none;
         margin-left: 15px;
         border-radius: 100px;
-        color: #26a65b;
+        color: var(--currentTheme);
         text-align: center;
         font-size: 28px;
-        &:focus {
-          outline: none;
-        }
+        &:focus { outline: none; }
       }
     }
     .sns {
-      color: #26a65b;
+      color: var(--currentTheme);
       font-size: 30px;
       margin: 0 10px;
       transition: 0.2s;
-      &:hover {
-        transform: scale(1.2);
-      }
+      &:hover { transform: scale(1.2); }
     }
   }
 }

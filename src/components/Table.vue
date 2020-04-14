@@ -219,7 +219,7 @@ export default {
 <style lang="scss" scoped>
 .st {
   .st-header {
-    color: #26a65b;
+    color: var(--currentTheme);
     font-size: 20px;
     vertical-align: middle;
   }
@@ -246,7 +246,7 @@ export default {
     border: none;
   }
   .btn {
-    color: #26a65b;
+    color: var(--currentTheme);
     font-size: 11px;
     width: 20px;
     height: 20px;
@@ -259,7 +259,7 @@ export default {
     &:focus { outline: none; }
     &:hover {
       color: #111;
-      background: #26a65b;
+      background: var(--currentTheme);
     }
   }
   .strategy_input {
@@ -272,13 +272,13 @@ export default {
     transition: 0.2s;
     &:focus { outline: none; }
     &:hover {
-      color: #26a65b;
-      border-bottom: 2px solid #26a65b;
+      color: var(--currentTheme);
+      border-bottom: 2px solid var(--currentTheme);
     }
   }
 }
 .strategy_btn {
-  color: #26a65b;
+  color: var(--currentTheme);
   font-size: 20px;
   width: 40px;
   height: 40px;
@@ -290,14 +290,14 @@ export default {
   transition: 0.2s;
   &:hover {
     color: #111;
-    background: #26a65b;
+    background: var(--currentTheme);
   }
   &:focus {
     outline: none;
   }
 }
 .strategy_span {
-  color: #26a65b;
+  color: var(--currentTheme);
   font-size: 20px;
   font-weight: 350;
 }

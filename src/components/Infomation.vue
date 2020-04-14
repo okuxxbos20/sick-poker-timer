@@ -75,7 +75,7 @@ export default {
     padding: 0;
     margin: 0;
     span {
-      color: #26a65b;
+      color: var(--currentTheme);
       font-size: 40px;
       font-weight: 200;
     }
@@ -83,12 +83,10 @@ export default {
       color: #777;
       font-size: 25px;
     }
-    .denominator {
-      font-size: 25px;
-    }
+    .denominator { font-size: 25px; }
   }
   button {
-    color: #26a65b;
+    color: var(--currentTheme);
     font-size: 11px;
     width: 25px;
     height: 25px;
@@ -98,12 +96,10 @@ export default {
     border: none;
     background: transparent;
     transition: 0.2s;
-    &:focus {
-      outline: none;
-    }
+    &:focus { outline: none; }
     &:hover {
       color: #111;
-      background: #26a65b;
+      background: var(--currentTheme);
     }
   }
 }

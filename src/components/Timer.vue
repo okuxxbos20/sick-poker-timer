@@ -5,7 +5,9 @@
         <p class="part time">{{ r_timer().min }} : {{ r_timer().sec }}</p>
         <h6 class="part level">LEVEL {{ r_level() }}</h6>
         <h6 class="part blinds">BLINDS</h6>
-        <h6 class="part sbbb">{{ r_strategy()[r_level()-1][0] }}/{{ r_strategy()[r_level()-1][1] }}</h6>
+        <h6 class="part sbbb">
+          {{ r_strategy()[r_level()-1][0] }}/{{ r_strategy()[r_level()-1][1] }}
+        </h6>
       </span>
     </div>
     <p class="nextbb">NEXT BLINDS :
@@ -23,7 +25,7 @@ export default {
     return {};
   },
   methods: {
-    r_status() {
+    r_status () {
       return this.$store.getters.g_status;
     },
     r_timer () {
@@ -64,7 +66,7 @@ export default {
     left: -200px;
     width: 400px;
     height: 400px;
-    background: #26a65b;
+    background: var(--currentTheme);
     // background: linear-gradient(45deg, #26a65b, #111);
     transform-origin: right 200px;
     z-index: 2;
@@ -78,7 +80,7 @@ export default {
     left: 200px;
     width: 400px;
     height: 400px;
-    background: #26a65b;
+    background: var(--currentTheme);
     // background: linear-gradient(45deg, #111, #26a65b);
     transform-origin: left 200px;
     z-index: 3;
@@ -86,11 +88,11 @@ export default {
   @keyframes rotate-circle-right {
     0% {
       transform: rotate(0deg);
-      background: #26a65b;
+      background: var(--currentTheme);
     }
     50%  {
       transform: rotate(180deg);
-      background: #26a65b;
+      background: var(--currentTheme);
     }
     50.01% {
       transform: rotate(360deg);
@@ -140,7 +142,7 @@ export default {
   }
   .blinds {
     font-size: 25px;
-    color: #26a65b;
+    color: var(--currentTheme);
     top: 72%;
     left: 51%;
   }
@@ -156,8 +158,8 @@ export default {
   color: #777;
   font-size: 20px;
   span {
-    color: #26a65b;
     font-size: 35px;
+    color: var(--currentTheme);
   }
 }
 </style>
