@@ -54,7 +54,7 @@
       <p class="p" v-if="this.lang">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
       <p class="p ja" v-if="!this.lang">改善点や要望があれば以下のアカウントからDMでお願いします。</p>
       <a href="#"><i class="fab fa-twitter sns"></i></a>
-      <a href="#"><i class="fab fa-instagram sns"></i></a>
+      <a href="#"><i class="fab fa-github sns"></i></a>
     </div>
 
   </div>
@@ -147,7 +147,7 @@ export default {
     .sns {
       color: var(--currentTheme);
       font-size: 30px;
-      margin: 0 10px;
+      margin: 10px;
       transition: 0.2s;
       &:hover { transform: scale(1.2); }
     }

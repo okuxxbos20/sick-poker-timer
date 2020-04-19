@@ -209,23 +209,8 @@ const store = new Vuex.Store({
     g_strategy: function (state) {
       return state.strategy;
     }
-  },
-  // 非同期処理はactionsで行う.
-  actions: {},
+  }
 });
-
-// history mode
-// const router = new VueRouter({
-//   routes,
-//   mode: 'history',
-//   scrollBehavior(to,from,savedPosition){
-//     if (savedPosition) {
-//       return savedPosition;
-//     } else {
-//        return { x:0, y:0};
-//     }
-//   }
-// });
 
 new Vue({
   el: '#app',

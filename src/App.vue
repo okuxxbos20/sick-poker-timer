@@ -1,7 +1,5 @@
 <template>
-  <div
-    id="app"
-  >
+  <div id="app">
     <Index/>
   </div>
 </template>
@@ -20,15 +18,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Kosugi|Sawarabi+Gothic|Sawarabi+Mincho&display=swap');
 :root {
   --currentTheme: #26a65b;
-  --greenTheme: #26a65b;
-  --purpleTheme: #9a12b3;//purple
-  --redTheme: #f03434;//red
-  --blueTheme: #00b5cc;//blue
-  --yellowTheme: #f7ca18;//yellow
-  --greyTheme: #dadfe1;//grey
-  --orangeTheme: #e67e22;//orange
-  --bg: #111;
-  --text: #888;
+  --duration: 600s;
 }
 
 html {

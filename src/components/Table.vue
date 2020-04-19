@@ -49,7 +49,7 @@
             type="text"
             class="strategy_input"
             @input="c_bbInput(idx, $event.target.value)"
-            :value="r_strategy[idx][1]"
+            v-model="r_strategy[idx][1]"
           >
           <button type="button" class="btn" @click="c_bbDown(idx)">
             <i class="fas fa-minus"></i>
@@ -66,7 +66,7 @@
             type="text"
             class="strategy_input"
             @input="c_anteInput(idx, $event.target.value)"
-            :value="r_strategy[idx][2]"
+            v-model="r_strategy[idx][2]"
           >
           <button type="button" class="btn" @click="c_anteDown(idx)">
             <i class="fas fa-minus"></i>
@@ -129,10 +129,15 @@
 <script>
 export default {
   name: 'Table',
-  data() {
+  data () {
+    const strategy = this.$store.getters.g_strategy;
     return {
+      strategy,
       borderless: true,
     }
+  },
+  mounted () {
+    console.log(this.strategy);
   },
   methods: {
     c_sbUp (idx) {
@@ -175,6 +180,7 @@ export default {
       this.$store.commit('m_anteDown', idx);
     },
     c_durationUp (idx) {
+      this.strategy[idx][3] / 60 + 1;
       this.$store.commit('m_durationUp', idx);
     },
     c_durationInput (idx, input) {
@@ -292,9 +298,7 @@ export default {
     color: #111;
     background: var(--currentTheme);
   }
-  &:focus {
-    outline: none;
-  }
+  &:focus { outline: none; }
 }
 .strategy_span {
   color: var(--currentTheme);

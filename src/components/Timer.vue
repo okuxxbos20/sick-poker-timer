@@ -44,8 +44,8 @@ export default {
 <style lang="scss" scoped>
 // inserted css by vue
 .circle_animation {
-  &:before { animation: rotate-circle-left 600s linear infinite; }
-  &:after { animation: rotate-circle-right 600s linear infinite; }
+  &:before { animation: rotate-circle-left var(--duration) linear infinite; }
+  &:after { animation: rotate-circle-right var(--duration) linear infinite; }
 }
 
 .circle {

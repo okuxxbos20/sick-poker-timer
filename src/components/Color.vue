@@ -14,7 +14,6 @@
 <script>
 export default {
   name: 'Controller',
-
   methods: {
     colorSelect(color) {
       document.documentElement.style.setProperty('--currentTheme', color);
