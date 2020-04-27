@@ -4,8 +4,8 @@
       <!-- table header -->
       <b-thead class="st-header">
         <b-th>Level</b-th>
-        <b-th>Small Blind</b-th>
-        <b-th>Big Blind</b-th>
+        <b-th>SB</b-th>
+        <b-th>BB</b-th>
         <b-th>Ante</b-th>
         <b-th>Duration</b-th>
       </b-thead>
@@ -24,7 +24,7 @@
         <!-- level -->
 
         <!-- SB -->
-        <b-td class="t-info col-2">
+        <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_sbUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -41,7 +41,7 @@
         <!-- SB -->
 
         <!-- BB -->
-        <b-td class="t-info col-2">
+        <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_bbUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -58,7 +58,7 @@
         <!-- BB -->
 
         <!-- Ante -->
-        <b-td class="t-info col-2">
+        <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_anteUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -75,7 +75,7 @@
         <!-- Ante -->
 
         <!-- Duration -->
-        <b-td class="t-info col-2">
+        <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_durationUp(idx)">
             <i class="fas fa-plus"></i>
           </button>
@@ -245,7 +245,7 @@ export default {
   .t-info {
     font-size: 17px;
     font-weight: 300;
-    width: 100px;
+    width: 200px;
     padding: 18px 0;
     margin: 10px;
     vertical-align: middle;
@@ -271,7 +271,7 @@ export default {
   .strategy_input {
     color: #aaa;
     text-align: center;
-    width: 30px;
+    width: 45px;
     background: transparent;
     border: none;
     border-bottom: 2px solid transparent;
@@ -280,6 +280,7 @@ export default {
     &:hover {
       color: var(--currentTheme);
       border-bottom: 2px solid var(--currentTheme);
+      border-radius: 0;
     }
   }
 }
