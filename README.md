@@ -1,5 +1,5 @@
 # poker-timer
-
+![sick-poker-timer](assets/forReadMe.png)
 ## deploy
 ```
 sh deoloy.sh
