@@ -245,7 +245,7 @@ export default {
   .t-info {
     font-size: 17px;
     font-weight: 300;
-    width: 200px;
+    width: 135px;
     padding: 18px 0;
     margin: 10px;
     vertical-align: middle;
