@@ -1,13 +1,18 @@
 <template>
   <main>
     <h3 class="h">Choose color</h3>
-    <div class="color red" @click="colorSelect('#f03434')"></div>
-    <div class="color green" @click="colorSelect('#26a65b')"></div>
-    <div class="color blue" @click="colorSelect('#00b5cc')"></div>
-    <div class="color purple" @click="colorSelect('#9a12b3')"></div>
-    <div class="color yellow" @click="colorSelect('#f7ca18')"></div>
-    <div class="color orange" @click="colorSelect('#e67e22')"></div>
-    <div class="color grey" @click="colorSelect('#dadfe1')"></div>
+    <div>
+      <div class="color red" @click="colorSelect('#f03434')"></div>
+      <div class="color green" @click="colorSelect('#26a65b')"></div>
+      <div class="color blue" @click="colorSelect('#00b5cc')"></div>
+      <div class="color purple" @click="colorSelect('#9a12b3')"></div>
+    </div>
+    <div>
+      <div class="color yellow" @click="colorSelect('#f7ca18')"></div>
+      <div class="color orange" @click="colorSelect('#e67e22')"></div>
+      <div class="color grey" @click="colorSelect('#dadfe1')"></div>
+      <div class="color random" @click="randomColor"></div>
+    </div>
   </main>
 </template>
 
@@ -17,6 +22,13 @@ export default {
   methods: {
     colorSelect(color) {
       document.documentElement.style.setProperty('--currentTheme', color);
+    },
+    randomColor () {
+      const red = Math.round((Math.random() * 255));
+      const green = Math.round((Math.random() * 255));
+      const blue = Math.round((Math.random() * 255));
+      const randomColor = `rgba(${red}, ${green}, ${blue})`;
+      document.documentElement.style.setProperty('--currentTheme', randomColor);
     }
   }
 }
@@ -25,9 +37,7 @@ export default {
 <style lang="scss" scoped>
 main {
   margin-bottom: 50px;
-  .h {
-    color: #aaa;
-  }
+  .h { color: #aaa; }
   .color {
     display: inline-block;
     width: 35px;
@@ -47,5 +57,10 @@ main {
   .yellow { background: #f7ca18; }
   .orange { background: #e67e22; }
   .grey { background: #dadfe1; }
+  .random { background:
+    linear-gradient(217deg, rgba(255,0,0,0.8), rgba(255,0,0,0) 70.71%),
+    linear-gradient(127deg, rgba(0,255,0,0.8), rgba(0,255,0,0) 70.71%),
+    linear-gradient(336deg, rgba(0,0,255,0.8), rgba(0,0,255,0) 70.71%);
+  }
 }
 </style>
