@@ -11,7 +11,7 @@
       <div class="color yellow" @click="colorSelect('#f7ca18')"></div>
       <div class="color orange" @click="colorSelect('#e67e22')"></div>
       <div class="color grey" @click="colorSelect('#dadfe1')"></div>
-      <div class="color random" @click="randomColor"></div>
+      <div class="color random" @click="randomColor()"></div>
     </div>
   </main>
 </template>
@@ -57,10 +57,11 @@ main {
   .yellow { background: #f7ca18; }
   .orange { background: #e67e22; }
   .grey { background: #dadfe1; }
-  .random { background:
-    linear-gradient(217deg, rgba(255,0,0,0.8), rgba(255,0,0,0) 70.71%),
-    linear-gradient(127deg, rgba(0,255,0,0.8), rgba(0,255,0,0) 70.71%),
-    linear-gradient(336deg, rgba(0,0,255,0.8), rgba(0,0,255,0) 70.71%);
+  .random {
+    background:
+      linear-gradient(0deg, rgba(130,0,0,1), rgba(130,0,0,0.1) 100%),
+      linear-gradient(120deg, rgba(0,225,0,1), rgba(0,255,0,0.1) 100%),
+      linear-gradient(240deg, rgba(0,0,225,1), rgba(0,0,255,0.1) 100%);
   }
 }
 </style>
