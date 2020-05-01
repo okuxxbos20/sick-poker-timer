@@ -2,7 +2,7 @@
   <div class="docs container">
 
     <div class="part setting">
-      <h3 class="h" v-if="this.lang">Strategy Setting 💻</h3>
+      <h3 class="h" v-if="this.lang">Stracture Setting 💻</h3>
       <!-- <h3 class="h ja" v-if="!this.lang">設定 💻</h3> -->
       <p class="p" v-if="this.lang">You can change the setting freely by operating the table below.
       </p>
