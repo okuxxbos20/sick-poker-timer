@@ -1,15 +1,17 @@
 <template>
   <div class="controller justify-content-center">
-    <button @click="c_counterUp()" class="ctr plus_btn">
+    <button @click="c_counterUp()" class="btn">
       <i class="fas fa-plus"></i>
     </button>
-    <button v-show="!r_status()" type="button" @click="c_startTimer()" class="ctr">
+
+    <button v-show="!r_status()" type="button" @click="c_startTimer()" class="btn center">
       <i class="fas fa-play"></i>
     </button>
-    <button v-show="r_status()" type="button" @click="c_stopTimer()" class="ctr stop">
+    <button v-show="r_status()" type="button" @click="c_stopTimer()" class="btn center stop">
       <i class="fas fa-equals"></i>
     </button>
-    <button @click="c_counterDown()" class="ctr minus_btn">
+
+    <button @click="c_counterDown()" class="btn">
       <i class="fas fa-minus"></i>
     </button>
   </div>
@@ -40,13 +42,15 @@ export default {
 
 <style lang="scss" scoped>
 .controller {
-  .ctr {
+  .btn {
     color: var(--currentTheme);
     font-size: 30px;
     width: 70px;
     height: 70px;
-    margin: 5px 20px 40px;
-    padding-top: 5px;
+    padding: 0;
+    margin: 5px 0 40px;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
     border: 2px solid var(--currentTheme);
     background: transparent;
@@ -56,6 +60,9 @@ export default {
       color: #2e3131;
       border: 2px solid #2e3131;
     }
+  }
+  .center {
+    margin: 5px 20px 40px;
   }
   .stop {
     color: #111;
