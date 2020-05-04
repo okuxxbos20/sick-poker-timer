@@ -42,6 +42,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css?family=BioRhyme+Expanded|Holtwood+One+SC|Stalinist+One|Timmana&display=swap');
+
 // inserted css by vue
 .circle_animation {
   &:before { animation: rotate-circle-left var(--duration) linear infinite; }
@@ -110,9 +112,9 @@ export default {
   }
 }
 .flame {
-  width: 380px;
-  height: 380px;
-  margin: 10px 0 0 0;
+  width: 370px;
+  height: 370px;
+  margin: 15px 0 0 0;
   background: #111;
   border-radius: 50%;
   display: inline-block;
@@ -125,15 +127,16 @@ export default {
     transform : translate(-50%, -50%);
   }
   .level {
-    font-size: 30px;
     color: #aaa;
+    font-size: 30px;
     margin: 0;
     top: 23%;
     left: 51%;
   }
   .time {
-    font-size: 100px;
     color: #fff;
+    font-size: 100px;
+    font-weight: 600;
     margin: 0;
     padding: 0;
     font-family: 'Josefin Sans', sans-serif;
@@ -147,8 +150,9 @@ export default {
     left: 51%;
   }
   .sbbb {
-    font-size: 55px;
     color: #aaa;
+    font-size: 50px;
+    font-weight: 550;
     margin: 0;
     top: 85%;
     left: 50.5%;
@@ -158,7 +162,7 @@ export default {
   color: #777;
   font-size: 20px;
   span {
-    font-size: 35px;
+    font-size: 45px;
     color: var(--currentTheme);
   }
 }
