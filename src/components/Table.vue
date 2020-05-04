@@ -137,7 +137,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.strategy);
+    console.table(this.strategy);
   },
   methods: {
     c_sbUp (idx) {
