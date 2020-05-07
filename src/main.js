@@ -154,7 +154,7 @@ const store = new Vuex.Store({
         state.strategy[len][0] + 100,
         (state.strategy[len][0] + 100) * 2,
         0,
-        10
+        600
       ]);
     },
     m_strategyRemove (state) {
