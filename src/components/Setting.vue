@@ -1,62 +1,88 @@
 <template>
   <div class="docs container">
-
     <div class="part setting">
-      <h3 class="h" v-if="this.lang">Stracture Setting 💻</h3>
-      <!-- <h3 class="h ja" v-if="!this.lang">設定 💻</h3> -->
-      <p class="p" v-if="this.lang">You can change the setting freely by operating the table below.
-      </p>
-      <!-- <button type="button" class="langchange" v-if="this.lang" @click="langSwitch()">日本語</button>
-      <p class="p ja" v-if="!this.lang">ハンドラ関数は状態を第1引数として取得し、状態の変更を行います。また、仮引数を追加することもできます。下記で仮引数を追加してみます。状態（state）の更新をしてみましょう。まず、覚えておく必要があるのは、ミューテーションは直接呼び出せないということです。つまり、のように使うことはできません。
-      <button type="button" class="langchange" v-if="!this.lang" @click="langSwitch()">English</button>
-      </p> -->
-
+      <h3 class="h">Stracture Setting 💻</h3>
+      <p class="p">You can change the setting freely by operating the table below.</p>
       <!-- controller -->
-      <div class="st-initial row justify-content-center">
-        <p>Players
+      <div class="mode">Mode: <strong>{{ selected }}</strong></div>
+      <div class="upper row justify-content-center">
+        <div class="col-md-3">
+          <b-form-radio
+            name="some-radios"
+            value="Standard"
+            size="lg"
+            @change="modeSelected('Standard')"
+          >
+            <span>Standard</span>
+          </b-form-radio>
+        </div>
+        <div class="col-md-3">
+          <b-form-radio
+            name="some-radios"
+            value="Tarbo"
+            size="lg"
+            @change="modeSelected('Turbo')"
+          >
+            <span>Turbo</span>
+          </b-form-radio>
+        </div>
+        <div class="col-md-3">
+          <b-form-radio
+            name="some-radios"
+            value="Deep Stack"
+            size="lg"
+            @change="modeSelected('Deep Stack')"
+          >
+            <span>Deep Stack</span>
+          </b-form-radio>
+        </div>
+        <div class="col-md-3">
+          <b-form-radio
+            name="some-radios"
+            value="No Ante"
+            size="lg"
+            @change="modeSelected('No Ante')"
+          >
+            <span>No Ante</span>
+          </b-form-radio>
+        </div>
+      </div>
+      <div class="lower row">
+        <div class="col-md-4">
+          <p class="st-name">Players</p>
           <input
             type="text"
             @input="c_playersInput($event.target.value)"
             :value="r_players()"
           >
-        </p>
-        <p>Total Chips
+        </div>
+        <div class="col-md-4">
+          <p class="st-name">Total Chips</p>
           <input
-          @input="c_totalInput($event.target.value)"
-          :value="r_total()"
+            type="text"
+            @input="c_totalInput($event.target.value)"
+            :value="r_total()"
           >
-        </p>
-        <p>In The Money
+        </div>
+        <div class="col-md-4">
+          <p class="st-name">In The Money</p>
           <input
             type="text"
             @input="c_itmInput($event.target.value)"
             :value="r_itm()"
           >
-        </p>
+        </div>
       </div>
       <!-- controller -->
       <Table/>
     </div>
-
     <Color/>
-
-    <!-- <div class="part howto">
-      <h3 class="h" v-if="this.lang">How To</h3>
-      <h3 class="h ja" v-if="!this.lang">使い方</h3>
-      <p class="p" v-if="this.lang">Vue (pronounced /vjuː/, like view) is a progressive framework for building user interfaces. Unlike other monolithic frameworks, Vue is designed from the ground up to be incrementally adoptable. The core library is focused on the view layer only, and is easy to pick up and integrate with other libraries or existing projects. On the other hand, Vue is also perfectly capable of powering sophisticated Single-Page Applications when used in combination with modern tooling and supporting libraries.</p>
-      <p class="p ja" v-if="!this.lang">以下のテーブルでトーナメントの進行を設定できます。レベルの追加はテーブル下のボタンで追加できます。また、色
-      </p>
-    </div> -->
-
     <div class="part getintouch">
-      <h3 class="h" v-if="this.lang">Get In Touch 📮</h3>
-      <h3 class="h ja" v-if="!this.lang">コンタクト 📮</h3>
-      <p class="p" v-if="this.lang">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
-      <p class="p ja" v-if="!this.lang">改善点や要望があれば以下のアカウントからDMでお願いします。</p>
+      <h3 class="h">Get In Touch 📮</h3>
+      <p class="p">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
       <a href="#"><i class="fab fa-twitter sns"></i></a>
       <a href="https://github.com/okuxxbos20/sick-poker-timer"><i class="fab fa-github sns"></i></a>
     </div>
-
   </div>
 </template>
 
@@ -70,13 +96,10 @@ export default {
   components: { Table, Color },
   data() {
     return {
-      lang: true,//true->'en', false->'ja'
+      selected: 'Standard'
     }
   },
   methods: {
-    langSwitch () {
-      this.lang = this.lang === true ? false : true;
-    },
     c_playersInput (n) {
       this.$store.commit('m_players', n);
     },
@@ -97,6 +120,9 @@ export default {
     },
     r_itm () {
       return this.$store.getters.g_itm;
+    },
+    modeSelected (item) {
+      this.selected = item;
     }
   },
   created() {
@@ -113,30 +139,36 @@ export default {
     margin: 0;
   }
   .p {
-    // text-align: justify;
     text-align: center;
     color: #888;
     margin: 5px 0 10px;
   }
-  .langchange {
-    font-size: 12px;
-    color: var(--currentTheme);
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid #111;
-    &:focus { outline: none; }
-    &:hover { border-bottom: 2px solid var(--currentTheme); }
-  }
   .part {
     margin-bottom: 40px;
-    .st-initial {
+    .mode { 
+      color: #aaa;
+      strong { color: var(--currentTheme); }
+    }
+    .upper {
+      input {
+        display: none;
+        margin-right: 30px;
+        &:hover { cursor: pointer; }
+      }
+      span {
+        color: #aaa;
+        padding-left: 15px;
+      }
+    }
+    .lower {
       color: #aaa;
       margin-top: 40px;
+      .st-name { margin: 0 0 3px; }
       input {
-        width: 40%;
+        width: 230px;
         background: #333;
         border: none;
-        margin-left: 15px;
+        margin: 0 0 20px;
         border-radius: 100px;
         color: var(--currentTheme);
         text-align: center;
