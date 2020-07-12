@@ -6,44 +6,14 @@
       <!-- controller -->
       <div class="mode">Mode: <strong>{{ selected }}</strong></div>
       <div class="upper row justify-content-center">
-        <div class="col-md-3">
+        <div v-for="option in options" :key="option" class="col-md-3">
           <b-form-radio
             name="some-radios"
-            value="Standard"
+            :value="option"
             size="lg"
-            @change="modeSelected('Standard')"
+            @change="modeSelected(option)"
           >
-            <span>Standard</span>
-          </b-form-radio>
-        </div>
-        <div class="col-md-3">
-          <b-form-radio
-            name="some-radios"
-            value="Tarbo"
-            size="lg"
-            @change="modeSelected('Turbo')"
-          >
-            <span>Turbo</span>
-          </b-form-radio>
-        </div>
-        <div class="col-md-3">
-          <b-form-radio
-            name="some-radios"
-            value="Deep Stack"
-            size="lg"
-            @change="modeSelected('Deep Stack')"
-          >
-            <span>Deep Stack</span>
-          </b-form-radio>
-        </div>
-        <div class="col-md-3">
-          <b-form-radio
-            name="some-radios"
-            value="No Ante"
-            size="lg"
-            @change="modeSelected('No Ante')"
-          >
-            <span>No Ante</span>
+            <span>{{ option }}</span>
           </b-form-radio>
         </div>
       </div>
@@ -94,8 +64,9 @@ export default {
   name: 'Setting',
   props: {},
   components: { Table, Color },
-  data() {
+  data () {
     return {
+      options: ['Hyper', 'Turbo', 'Standard', 'Deep Stack'],
       selected: 'Standard'
     }
   },
@@ -145,7 +116,7 @@ export default {
   }
   .part {
     margin-bottom: 40px;
-    .mode { 
+    .mode {
       color: #aaa;
       strong { color: var(--currentTheme); }
     }
