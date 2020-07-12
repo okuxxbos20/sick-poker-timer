@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
@@ -10,6 +11,19 @@ Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+
+// Your web app's Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyCka_UjHTfc-PldajmFKkjD_oMsaekXyG0",
+  authDomain: "sick-poker-timer-592aa.firebaseapp.com",
+  databaseURL: "https://sick-poker-timer-592aa.firebaseio.com",
+  projectId: "sick-poker-timer-592aa",
+  storageBucket: "sick-poker-timer-592aa.appspot.com",
+  messagingSenderId: "403411495017",
+  appId: "1:403411495017:web:ff2427f86e2e2e035a5af8"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 const store = new Vuex.Store({
   state: {
