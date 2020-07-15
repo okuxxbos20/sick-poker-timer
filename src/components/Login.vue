@@ -6,22 +6,51 @@
         <h3>{{ loginOrSignup }}</h3>
         <div class="form-group">
           <label>Email address</label>
-          <input v-if="isAlreadyLogin" type="email" class="form-control" v-model="email">
-          <input v-if="!isAlreadyLogin" type="email" class="form-control" v-model="loginEmail">
+          <input
+            v-if="!isLoginForm"
+            v-model="email"
+            type="email"
+            class="form-control"
+          >
+          <input
+            v-if="isLoginForm"
+            v-model="loginEmail"
+            type="email"
+            class="form-control"
+          >
           <small class="warn">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Password</label>
-          <input v-if="isAlreadyLogin" type="password" class="form-control" v-model="password">
-          <input v-if="!isAlreadyLogin" type="password" class="form-control" v-model="loginPassword">
+          <input
+            v-if="!isLoginForm"
+            v-model="password"
+            type="password"
+            class="form-control"
+          >
+          <input
+            v-if="isLoginForm"
+            v-model="loginPassword"
+            type="password"
+            class="form-control"
+          >
         </div>
         <div class="form-check">
           <input type="checkbox" class="form-check-input">
           <label class="form-check-label" for="exampleCheck1">Remember me</label>
         </div>
+        <div v-if="isError" class="error-message">
+          <p>{{ errorCode }}</p>
+          <p>{{ errorMessage }}</p>
+        </div>
         <button type="submit" name="button">{{ loginOrSignup }}</button>
-        <p class="signup-sentence">New to Sick-Poker-Timer?
-          <span @click="switchStatus ()">{{ anotherGate }}.</span>
+        <p class="signup-sentence">{{ bottomMessage }}
+          <span
+            @click="switchStatus ()"
+            :class="{ error: isError }"
+          >
+            {{ anotherGate }}.
+          </span>
         </p>
       </div>
     </form>
@@ -42,9 +71,13 @@ export default {
       isFormOpen: false,
       isLoginForm: true,
       isAlreadyLogin: false,
+      isError: false,
+      errorCode: '',
+      errorMessage: '',
       loginOrSignup: 'Login',
       anotherGate: 'Sign up',
       welcomeSentence: 'Login?',
+      bottomMessage: 'New to Sick-Poker-Timer?',
       email: '',
       password: '',
       loginEmail: '',
@@ -66,29 +99,26 @@ export default {
   },
   methods: {
     submitForm () {
-      if (this.isAlreadyLogin) {
-        this.registerUser ();
-      } else {
+      if (this.isLoginForm && !this.isAlreadyLogin) {
         this.loginUser ();
+      }
+      if (!this.isLoginForm && !this.isAlreadyLogin) {
+        this.registerUser ();
       }
     },
     registerUser () {
       console.log(firebase);
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        this.isError = true;
+        this.errorMessage = error.message;
+        this.errorCode = error.code;
       });
     },
     loginUser () {
       firebase.auth().signInWithEmailAndPassword(this.loginEmail, this.loginPassword).catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        this.isError = true;
+        this.errorMessage = error.message;
+        this.errorCode = error.code;
       });
     },
     logoutUser () {
@@ -96,12 +126,17 @@ export default {
     },
     switchStatus () {
       this.isLoginForm = !this.isLoginForm;
+      this.loginEmail = '';
+      this.loginPassword = '';
+      this.isError = false;
       if (this.isLoginForm) {
         this.loginOrSignup = 'Login';
         this.anotherGate = 'Sign up';
+        this.bottomMessage = 'New to Sick-Poker-Timer?';
       } else {
         this.loginOrSignup = 'Sign up';
         this.anotherGate = 'Login';
+        this.bottomMessage = 'Alerady have account?';
       }
     }
   }
@@ -149,19 +184,25 @@ export default {
       .warn { color: #777; }
     }
     .form-check { color: #aaa; }
+    .error-message {
+      margin: 15px 0;
+      p {
+        color: #d64541;
+        margin: 2px 0;
+      }
+    }
     button {
       color: var(--currentTheme);
       background: transparent;
-      border: none;
-      border-radius: 10px;
+      border: 1px solid var(--currentTheme);
+      border-radius: 100px;
       font-size: 22px;
-      padding: 10px 20px;
-      margin: 20px 0;
+      padding: 5px 20px;
+      margin: 10px 0 20px;
       transition: 200ms;
       &:hover {
         color: #111;
         background: var(--currentTheme);
-        border-radius: 100px;
         cursor: pointer;
       }
       &:focus { outline: none; }
@@ -175,6 +216,10 @@ export default {
           border-bottom: 1px solid var(--currentTheme);
           cursor: pointer;
         }
+      }
+      .error {
+        color: var(--currentTheme);
+        border-bottom: 1px solid var(--currentTheme);
       }
     }
   }
