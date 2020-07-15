@@ -1,6 +1,10 @@
 <template>
   <div class="login">
-    <p @click="isFormOpen = !isFormOpen" class="login-gate">{{ welcomeSentence }}</p>
+    <div
+      @click="isFormOpen = false"
+      :class="{ overlay: isFormOpen }"
+    ></div>
+    <p @click="formOpen ()" class="login-gate">{{ welcomeSentence }}</p>
     <form v-if="isFormOpen && !isAlreadyLogin" @submit.prevent="submitForm ()" action="index.html" method="post">
       <div v-if="!isAlreadyLogin">
         <h3>{{ loginOrSignup }}</h3>
@@ -98,6 +102,10 @@ export default {
     });
   },
   methods: {
+    formOpen () {
+      this.isFormOpen = !this.isFormOpen;
+      this.$emit('switchOverlay');
+    },
     submitForm () {
       if (this.isLoginForm && !this.isAlreadyLogin) {
         this.loginUser ();
@@ -155,6 +163,15 @@ export default {
     right: 5%;
     margin: 0;
     &:hover { cursor: pointer; }
+  }
+  .overlay {
+    background: rgba(#000, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
   }
   form {
     width: 75%;
