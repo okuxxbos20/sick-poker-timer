@@ -1,11 +1,11 @@
 <template>
-  <div class="main container">
-    <Login />
+  <main class="container">
+    <Login/>
     <Timer />
     <Controller />
     <Infomation />
     <Setting />
-  </div>
+  </main>
 </template>
 
 <script>
