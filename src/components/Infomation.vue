@@ -1,69 +1,59 @@
 <template>
-  <div>
-
-    <div class="infomation row">
-      <!-- players left -->
-      <p class="info col-sm-4">Players :
-        <button @click="playersUp()" type="button">
-          <i class="fas fa-plus"></i>
-        </button>
-        <span>{{ players_left() }}</span>
-        <button @click="playersDown()" type="button">
-          <i class="fas fa-minus"></i>
-        </button>
-        <span class="slash">/</span>
-        <span class="denominator">{{ r_players() }}</span>
-      </p>
-      <!-- players left -->
-
-      <!-- avg -->
-      <p class="info col-sm-4">AVG Stack :
-        <span>${{ average_counter() }}</span>
-      </p>
-      <!-- avg -->
-
-      <!-- In The Money -->
-      <p class="info col-sm-4">In The Money :
-        <span>{{ r_itm() }}</span>
-      </p>
-      <!-- In The Money -->
-
-    </div>
+  <div class="infomation row">
+    <p class="info col-sm-4">Players :
+      <button @click="playersUp()" type="button">
+        <i class="fas fa-plus"></i>
+      </button>
+      <span>{{ currentPlayers }}</span>
+      <button @click="playersDown()" type="button">
+        <i class="fas fa-minus"></i>
+      </button>
+      <span class="slash">/</span>
+      <span class="denominator">{{ originalPlayers }}</span>
+    </p>
+    <p class="info col-sm-4">AVG Stack :
+      <span>${{ totalStack | adComma }}</span>
+    </p>
+    <p class="info col-sm-4">In The Money :
+      <span>{{ inTheMoney }}</span>
+    </p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Infomation',
-  props: {},
   data() {
-    var original_players = this.$store.getters.g_players;
-    return { original_players }
+    return {
+      currentPlayers: this.$store.getters.g_players
+    }
   },
-  methods: {
-    average_counter () {
+  filters: {
+    adComma (avg) {
       const delimeter = new Intl.NumberFormat();
-      const avg = Math.floor( this.$store.getters.g_total / this.players_left() );
       return delimeter.format(avg);
-    },
-    playersUp () {
-      this.original_players >= this.r_players() ? this.r_players : this.original_players ++;
-    },
-    playersDown () {
-      this.original_players === 1 ? 1 : this.original_players --;
-    },
-    players_left () {
-      return this.original_players;
-    },
-    r_players () {
+    }
+  },
+  computed: {
+    originalPlayers () {
       return this.$store.getters.g_players;
     },
-    r_itm () {
+    totalStack () {
+      return Math.floor( this.$store.getters.g_total / this.currentPlayers );
+    },
+    inTheMoney () {
       return this.$store.getters.g_itm;
     }
   },
+  methods: {
+    playersUp () {
+      this.currentPlayers >= this.originalPlayers ? this.currentPlayers : this.currentPlayers ++;
+    },
+    playersDown () {
+      this.currentPlayers === 1 ? 1 : this.currentPlayers --;
+    }
+  }
 }
-
 </script>
 
 <style lang="scss" scoped>
