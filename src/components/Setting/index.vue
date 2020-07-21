@@ -56,8 +56,8 @@
 </template>
 
 <script>
-import Table from './Table';
-import Color from './Color';
+import Table from './table';
+import Color from './color';
 
 export default {
   name: 'Setting',
