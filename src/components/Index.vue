@@ -1,11 +1,11 @@
 <template>
-  <main class="container">
+  <div class="container">
     <Login/>
     <Timer />
     <Controller />
     <Infomation />
     <Setting />
-  </main>
+  </div>
 </template>
 
 <script>
@@ -20,9 +20,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.main {
-  padding: 0;
-  background: #111;
-}
-</style>
+<style lang="scss" scoped></style>

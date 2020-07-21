@@ -1,6 +1,6 @@
 <template>
   <div class="color">
-    <title>Choose color</title>
+    <div class="title">Choose Your Color</div>
     <div>
       <div class="picker red" @click="colorSelect('#f03434')"></div>
       <div class="picker green" @click="colorSelect('#26a65b')"></div>
@@ -37,7 +37,10 @@ export default {
 <style lang="scss" scoped>
 .color {
   margin-bottom: 50px;
-  title { color: #aaa; }
+  .title {
+    color: #aaa;
+    font-size: 24px;
+  }
   .picker {
     display: inline-block;
     width: 35px;

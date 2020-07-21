@@ -1,7 +1,7 @@
 <template>
   <div class="setting container">
     <div class="part setting">
-      <title>Stracture Setting 💻</title>
+      <div class="title">Stracture Setting 💻</div>
       <p class="sentence">You can change the setting freely by operating the table below.</p>
       <!-- controller -->
       <div class="mode">Mode: <strong>{{ selected }}</strong></div>
@@ -47,7 +47,7 @@
     </div>
     <Color/>
     <div class="part getintouch">
-      <title>Get In Touch 📮</title>
+      <div class="title">Get In Touch 📮</div>
       <p class="sentence">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
       <a href="#"><i class="fab fa-twitter sns"></i></a>
       <a href="https://github.com/okuxxbos20/sick-poker-timer"><i class="fab fa-github sns"></i></a>
@@ -100,8 +100,9 @@ export default {
   padding-bottom: 1px;
   .part {
     margin-bottom: 40px;
-    title {
+    .title {
       color: #aaa;
+      font-size: 24px;
       margin: 0;
     }
     .sentence {
