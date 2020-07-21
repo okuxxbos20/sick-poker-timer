@@ -13,7 +13,7 @@
       <div class="picker grey" @click="colorSelect('#dadfe1')"></div>
       <div class="picker random" @click="randomColor()"></div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
