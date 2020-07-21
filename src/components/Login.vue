@@ -4,7 +4,21 @@
       @click="isFormOpen = false"
       :class="{ overlay: isFormOpen }"
     ></div>
-    <p @click="formOpen ()" class="login-gate">{{ welcomeSentence }}</p>
+    <p v-if="!isAlreadyLogin" class="login-gate" @click="formOpen ()">Login?</p>
+    <img
+      v-if="userPhoto && isAlreadyLogin"
+      :src="userPhoto"
+      alt="userprofile"
+      class="login-icon"
+      @click="formOpen ()"
+    >
+    <img
+      v-if="!userPhoto && isAlreadyLogin"
+      src="../assets/avatar.png"
+      alt="avator"
+      class="login-icon"
+      @click="formOpen ()"
+    >
     <form v-if="isFormOpen && !isAlreadyLogin" @submit.prevent="submitForm ()" action="index.html" method="post">
       <div v-if="!isAlreadyLogin">
         <h3>{{ loginOrSignup }}</h3>
@@ -69,7 +83,7 @@
       <img v-else src="../assets/avatar.png" alt="avator">
       <p class="user-name">{{ userName }}</p>
       <p class="user-email">{{ userEmail }}</p>
-      <p class="user-twitterid">@{{ userTwitterid }}</p>
+      <p class="user-twitterid">{{ userTwitterid }}</p>
       <p class="logout-gate" @click="logoutUser ()">Log out</p>
     </div>
   </div>
@@ -95,7 +109,6 @@ export default {
       errorMessage: '',
       loginOrSignup: 'Login',
       anotherGate: 'Sign up',
-      welcomeSentence: 'Login?',
       bottomMessage: 'New to Sick-Poker-Timer?',
       email: '',
       password: '',
@@ -112,7 +125,6 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.isAlreadyLogin = true;
-        this.welcomeSentence = 'Welcome';
         this.userName = user.displayName;
         this.userEmail = user.email;
         this.userPhoto = user.photoURL;
@@ -127,7 +139,6 @@ export default {
         console.log(`providerData: ${user.providerData}`);
       } else {
         this.isAlreadyLogin = false;
-        this.welcomeSentence = 'Login?';
         console.log('logout');
       }
     });
@@ -168,7 +179,7 @@ export default {
       const provider = new firebase.auth.TwitterAuthProvider();
       firebase.auth().signInWithPopup(provider).then(userCredential => {
         console.log(`this is ${userCredential.additionalUserInfo.username}`);
-        this.userTwitterid = userCredential.additionalUserInfo.username;
+        this.userTwitterid += `@${userCredential.additionalUserInfo.username}`
       }).catch(error => {
         this.isError = true;
         this.errorMessage = error.message;
@@ -228,6 +239,16 @@ export default {
     font-weight: 600;
     position: absolute;
     top: 5px;
+    right: 5%;
+    margin: 0;
+    &:hover { cursor: pointer; }
+  }
+  .login-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: 15px;
     right: 5%;
     margin: 0;
     &:hover { cursor: pointer; }
