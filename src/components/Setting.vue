@@ -1,8 +1,8 @@
 <template>
   <div class="setting container">
     <div class="part setting">
-      <h3 class="h">Stracture Setting 💻</h3>
-      <p class="p">You can change the setting freely by operating the table below.</p>
+      <title>Stracture Setting 💻</title>
+      <p class="sentence">You can change the setting freely by operating the table below.</p>
       <!-- controller -->
       <div class="mode">Mode: <strong>{{ selected }}</strong></div>
       <div class="upper row justify-content-center">
@@ -47,8 +47,8 @@
     </div>
     <Color/>
     <div class="part getintouch">
-      <h3 class="h">Get In Touch 📮</h3>
-      <p class="p">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
+      <title>Get In Touch 📮</title>
+      <p class="sentence">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
       <a href="#"><i class="fab fa-twitter sns"></i></a>
       <a href="https://github.com/okuxxbos20/sick-poker-timer"><i class="fab fa-github sns"></i></a>
     </div>
@@ -56,12 +56,11 @@
 </template>
 
 <script>
-import Table from './Table.vue';
-import Color from './Color.vue';
+import Table from './Table';
+import Color from './Color';
 
 export default {
   name: 'Setting',
-  props: {},
   components: { Table, Color },
   data () {
     return {
@@ -91,8 +90,6 @@ export default {
     r_itm () {
       return this.$store.getters.g_itm;
     }
-  },
-  created() {
   }
 }
 </script>
@@ -101,17 +98,17 @@ export default {
 .setting {
   margin: 90px 0 0 0;
   padding-bottom: 1px;
-  .h {
-    color: #aaa;
-    margin: 0;
-  }
-  .p {
-    text-align: center;
-    color: #888;
-    margin: 5px 0 10px;
-  }
   .part {
     margin-bottom: 40px;
+    title {
+      color: #aaa;
+      margin: 0;
+    }
+    .sentence {
+      text-align: center;
+      color: #888;
+      margin: 5px 0 10px;
+    }
     .mode {
       color: #aaa;
       strong { color: var(--currentTheme); }

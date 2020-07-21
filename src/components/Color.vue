@@ -1,17 +1,17 @@
 <template>
-  <main>
-    <h3 class="h">Choose color</h3>
+  <div class="color">
+    <title>Choose color</title>
     <div>
-      <div class="color red" @click="colorSelect('#f03434')"></div>
-      <div class="color green" @click="colorSelect('#26a65b')"></div>
-      <div class="color blue" @click="colorSelect('#00b5cc')"></div>
-      <div class="color purple" @click="colorSelect('#9a12b3')"></div>
+      <div class="picker red" @click="colorSelect('#f03434')"></div>
+      <div class="picker green" @click="colorSelect('#26a65b')"></div>
+      <div class="picker blue" @click="colorSelect('#00b5cc')"></div>
+      <div class="picker purple" @click="colorSelect('#9a12b3')"></div>
     </div>
     <div>
-      <div class="color yellow" @click="colorSelect('#f7ca18')"></div>
-      <div class="color orange" @click="colorSelect('#e67e22')"></div>
-      <div class="color grey" @click="colorSelect('#dadfe1')"></div>
-      <div class="color random" @click="randomColor()"></div>
+      <div class="picker yellow" @click="colorSelect('#f7ca18')"></div>
+      <div class="picker orange" @click="colorSelect('#e67e22')"></div>
+      <div class="picker grey" @click="colorSelect('#dadfe1')"></div>
+      <div class="picker random" @click="randomColor()"></div>
     </div>
   </main>
 </template>
@@ -35,16 +35,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main {
+.color {
   margin-bottom: 50px;
-  .h { color: #aaa; }
-  .color {
+  title { color: #aaa; }
+  .picker {
     display: inline-block;
     width: 35px;
     height: 35px;
     border-radius: 50%;
     margin: 10px;
-    transition: 0.2s;
+    transition: 200ms;
     &:hover {
       cursor: pointer;
       transform: scale(1.3);
