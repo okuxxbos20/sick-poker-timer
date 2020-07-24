@@ -60,8 +60,10 @@ export default {
 .circle {
   position: relative;
   margin: 0 auto;
-  width: 400px;
-  height: 400px;
+  width: calc(100vw - 30px);
+  height: calc(100vw - 30px);
+  max-width: 400px;
+  max-height: 400px;
   background: #111;
   border-radius: 50%;
   overflow: hidden;

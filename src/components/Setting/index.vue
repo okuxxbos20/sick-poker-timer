@@ -121,6 +121,7 @@ export default {
         span {
           color: #aaa;
           position: relative;
+          &:hover { cursor: pointer; }
           &:before {
             content: '';
             display: inline-block;

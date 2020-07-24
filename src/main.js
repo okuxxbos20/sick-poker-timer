@@ -6,6 +6,8 @@ import App from './App.vue';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import alarmClock from '@/assets/audio/alarmClock.mp3';
+import tearDrop from '@/assets/audio/tearDrop.mp3';
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);
@@ -58,8 +60,20 @@ const store = new Vuex.Store({
         isSelected: false
       }
     },
+    audio: [
+      {
+        name: 'alarmClock',
+        src: alarmClock,
+        isSelectd: true
+      },
+      {
+        name: 'tearDrop',
+        src: tearDrop,
+        isSelectd: false
+      }
+    ],
     strategy: [
-      [1, 2, 0, 600],
+      [1, 2, 0, 20],
       [5, 10, 0, 600],
       [10, 20, 0, 600],
       [20, 40, 0, 600],
@@ -84,10 +98,11 @@ const store = new Vuex.Store({
   mutations: {
     m_startTimer (state) {
       state.timer = setInterval(() => {
-        // if (state.strategy[state.level-1][3] === 5) {
-        //   console.log('play audio!');
-        //   audio.play();
-        // }
+        if (state.strategy[state.level-1][3] === 16) {
+          const selectedSound = state.audio.filter((v) => v.isSelectd)[0].src
+          const audio = new Audio(selectedSound);
+          audio.play();
+        }
         if (state.strategy[state.level-1][3] <= 0) {
           state.level ++;
         }
