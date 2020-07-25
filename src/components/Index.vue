@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Login/>
+    <Header />
     <Timer />
     <Controller />
     <Infomation />
@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import Login from './Login/';
+import Header from './Header';
 import Timer from './Timer/';
 import Controller from './Controller/';
 import Infomation from './Information/';
 import Setting from './Setting/';
 
 export default {
-  components: { Login, Timer, Controller, Infomation, Setting }
+  components: { Header, Timer, Controller, Infomation, Setting }
 }
 </script>
 

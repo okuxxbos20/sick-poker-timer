@@ -1,15 +1,12 @@
 <template>
   <div id="app">
-    <Index/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import Index from './components/Index.vue';
-
 export default {
-  name: 'App',
-  components: { Index }
+  name: 'App'
 }
 </script>
 
@@ -20,12 +17,10 @@ export default {
   --currentTheme: #26a65b;
   --duration: 600s;
 }
-
 html {
   margin: 0;
   padding: 0;
 }
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -38,12 +33,10 @@ html {
   color: #2c3e50;
   background: #111;
 }
-
 a {
   text-decoration: none;
   &:hover { text-decoration: none;}
 }
-
 .ja {
   font-family: 'Sawarabi Mincho', sans-serif;
   font-family: 'Kosugi', sans-serif;

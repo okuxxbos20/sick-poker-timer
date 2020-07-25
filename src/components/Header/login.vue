@@ -232,7 +232,6 @@ export default {
 
 <style lang="scss" scoped>
 .login {
-  height: 35px;
   .login-gate {
     color: var(--currentTheme);
     font-size: 15px;
@@ -241,7 +240,11 @@ export default {
     top: 5px;
     right: 5%;
     margin: 0;
-    &:hover { cursor: pointer; }
+    transition: 200ms;
+    &:hover {
+      cursor: pointer;
+      border-bottom: 1px solid var(--currentTheme);
+    }
   }
   .login-icon {
     width: 30px;

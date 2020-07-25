@@ -8,11 +8,24 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import alarmClock from '@/assets/audio/alarmClock.mp3';
 import tearDrop from '@/assets/audio/tearDrop.mp3';
+import { routes } from '@/routes'
 
 Vue.config.productionTip = false;
-Vue.use(Vuex);
 Vue.use(VueRouter);
+Vue.use(Vuex);
 Vue.use(BootstrapVue);
+
+const router = new VueRouter({
+  routes,
+  mode: 'history',
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
+});
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -244,7 +257,7 @@ const store = new Vuex.Store({
 new Vue({
   el: '#app',
   store,
-  // router,
+  router,
   render: h => h(App)
 });
 
