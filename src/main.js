@@ -14,6 +14,18 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 
+const router = new VueRouter({
+  routes,
+  mode: 'history',
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
+});
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyCka_UjHTfc-PldajmFKkjD_oMsaekXyG0",
@@ -244,7 +256,7 @@ const store = new Vuex.Store({
 new Vue({
   el: '#app',
   store,
-  // router,
+  router,
   render: h => h(App)
 });
 
