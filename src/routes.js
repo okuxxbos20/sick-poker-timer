@@ -1,5 +1,6 @@
 import IndexComp from '@/components/Index';
 import BlogComp from '@/components/Blog/index';
+import ArticleComp from '@/components/Blog/article';
 
 export const routes = [
   {
@@ -10,5 +11,9 @@ export const routes = [
     path: '/blog',
     component: BlogComp,
     name: 'blog'
+  }, {
+    path: '/article',
+    component: ArticleComp,
+    name: 'article'
   }
 ];

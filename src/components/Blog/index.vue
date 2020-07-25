@@ -1,16 +1,6 @@
 <template>
   <div class="blog">
-    <header>
-      <router-link to="/">
-        <ArrowleftIcon class="arrow-left-icon" />
-      </router-link>
-      <input
-        v-model="searchQuery"
-        class="search-window"
-        type="search"
-        placeholder="search"
-      >
-    </header>
+    <BlogHeader />
     <main>
       <div class="card">
         <h3 class="title">{{ card.title }}</h3>
@@ -18,11 +8,21 @@
           <code class="date">{{ card.date }}</code>
           <HeartIcon class="heart-icon" :likes="card.likes"/>
         </div>
-        <img v-if="!card.src" src="@/assets/img/noImage.png" alt="noImg">
-        <img v-else class="posted-img" :src="card.src" alt="postImg">
+        <img
+          v-if="!card.src"
+          src="@/assets/img/noImage.png"
+          alt="noImg"
+        >
+        <img
+          v-else
+          class="posted-img"
+          :src="card.src"
+          @click="moveTo(card.id)"
+          alt="postImg"
+        >
         <p class="sentence">{{ card.sentence }}</p>
       </div>
-      <div class="card">
+      <!-- <div class="card">
         <h3 class="title">{{ card.title }}</h3>
         <div class="status">
           <code class="date">{{ card.date }}</code>
@@ -39,27 +39,34 @@
         </div>
         <img src="@/assets/img/wsopRing.jpg" alt="postImg">
         <p class="sentence">{{ card.sentence }}</p>
-      </div>
+      </div> -->
     </main>
   </div>
 </template>
 
 <script>
-import ArrowleftIcon from '@/assets/icons/ArrowleftIcon';
+import BlogHeader from './components/BlogHeader';
 import HeartIcon from '@/assets/icons/HeartIcon';
 
 export default {
-  components: { ArrowleftIcon, HeartIcon },
+  components: { BlogHeader, HeartIcon },
   data() {
     return {
       searchQuery: '',
       card: {
-        title: 'Thie is Title',
+        id: 2345,
+        title: 'This is Title',
         date: 20200722,
         likes: 77676,
         src: require('@/assets/img/2018wsop.jpg'),
         sentence: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
       }
+    }
+  },
+  methods: {
+    moveTo(id) {
+      console.log(id);
+      // this.$router.push({ path: `/article/${id}` });
     }
   }
 }
@@ -67,38 +74,14 @@ export default {
 
 <style lang="scss" scoped>
 .blog {
-  header {
-    background: #111;
-    width: 100%;
-    height: 45px;
-    position: fixed;
-    top: 0px;
-    border-bottom: 1px solid var(--currentTheme);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 3;
-    .arrow-left-icon {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-    }
-    .search-window {
-      color: var(--currentTheme);
-      background: rgba(#333, 0.9);
-      width: 200px;
-      height: 30px;
-      border: none;
-      border-radius: 20px;
-      padding: 14px;
-      &:focus { outline: none; }
-    }
-  }
   main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 70px;
+    padding: 0 0 70px;
+    @media screen and (min-width: 480px) {
+      padding: 70px 0 0;
+    }
     .card {
       background: #333;
       width: 100%;
