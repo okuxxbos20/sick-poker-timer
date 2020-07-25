@@ -8,10 +8,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import alarmClock from '@/assets/audio/alarmClock.mp3';
 import tearDrop from '@/assets/audio/tearDrop.mp3';
+import { routes } from '@/routes'
 
 Vue.config.productionTip = false;
-Vue.use(Vuex);
 Vue.use(VueRouter);
+Vue.use(Vuex);
 Vue.use(BootstrapVue);
 
 const router = new VueRouter({

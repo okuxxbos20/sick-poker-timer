@@ -25,6 +25,5 @@ p {
     cursor: pointer;
     border-bottom: 1px solid var(--currentTheme);
   }
-
 }
 </style>
