@@ -1,21 +1,20 @@
 <template>
-  <div class="docs container">
+  <div class="setting container">
     <div class="part setting">
-      <h3 class="h">Stracture Setting 💻</h3>
-      <p class="p">You can change the setting freely by operating the table below.</p>
+      <div class="title">Stracture Setting 💻</div>
+      <p class="sentence">You can change the setting freely by operating the table below.</p>
       <!-- controller -->
       <div class="mode">Mode: <strong>{{ selected }}</strong></div>
       <div class="upper row justify-content-center">
-        <div v-for="option in options" :key="option" class="col-md-3">
-          <b-form-radio
-            name="some-radios"
+        <label v-for="option in options" :key="option.value" class="col-md-3">
+          <input
+            v-model="selected"
+            type="radio"
             :value="option"
-            size="lg"
-            @change="modeSelected(option)"
-          >
+            class="radio-btn"
+          />
             <span>{{ option }}</span>
-          </b-form-radio>
-        </div>
+        </label>
       </div>
       <div class="lower row">
         <div class="col-md-4">
@@ -48,8 +47,8 @@
     </div>
     <Color/>
     <div class="part getintouch">
-      <h3 class="h">Get In Touch 📮</h3>
-      <p class="p">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
+      <div class="title">Get In Touch 📮</div>
+      <p class="sentence">Plz more feedback or comments thru DM. And if you wanna join our team, plz let us know.</p>
       <a href="#"><i class="fab fa-twitter sns"></i></a>
       <a href="https://github.com/okuxxbos20/sick-poker-timer"><i class="fab fa-github sns"></i></a>
     </div>
@@ -57,12 +56,11 @@
 </template>
 
 <script>
-import Table from './Table.vue';
-import Color from './Color.vue';
+import Table from './table';
+import Color from './color';
 
 export default {
   name: 'Setting',
-  props: {},
   components: { Table, Color },
   data () {
     return {
@@ -91,44 +89,51 @@ export default {
     },
     r_itm () {
       return this.$store.getters.g_itm;
-    },
-    modeSelected (item) {
-      this.selected = item;
     }
-  },
-  created() {
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.docs {
+.setting {
   margin: 90px 0 0 0;
   padding-bottom: 1px;
-  .h {
-    color: #aaa;
-    margin: 0;
-  }
-  .p {
-    text-align: center;
-    color: #888;
-    margin: 5px 0 10px;
-  }
   .part {
     margin-bottom: 40px;
+    .title {
+      color: #aaa;
+      font-size: 24px;
+      margin: 0;
+    }
+    .sentence {
+      text-align: center;
+      color: #888;
+      margin: 5px 0 10px;
+    }
     .mode {
       color: #aaa;
       strong { color: var(--currentTheme); }
     }
     .upper {
-      input {
-        display: none;
-        margin-right: 30px;
-        &:hover { cursor: pointer; }
-      }
-      span {
-        color: #aaa;
-        padding-left: 15px;
+      margin-top: 20px;
+      label {
+        input { display: none; }
+        span {
+          color: #aaa;
+          position: relative;
+          &:hover { cursor: pointer; }
+          &:before {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: -30px;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #aaa;
+            border-radius: 50%;
+          }
+        }
       }
     }
     .lower {
@@ -137,7 +142,7 @@ export default {
       .st-name { margin: 0 0 3px; }
       input {
         width: 230px;
-        background: #333;
+        background: rgba(#333, 0.5);
         border: none;
         margin: 0 0 20px;
         border-radius: 100px;
@@ -155,5 +160,19 @@ export default {
       &:hover { transform: scale(1.2); }
     }
   }
+}
+</style>
+
+<style>
+input:checked + span:after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: -25px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--currentTheme);
 }
 </style>

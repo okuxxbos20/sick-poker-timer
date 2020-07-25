@@ -1,11 +1,35 @@
 <template>
   <div class="login">
-    <p @click="isFormOpen = !isFormOpen" class="login-gate">{{ welcomeSentence }}</p>
+    <div
+      @click="isFormOpen = false"
+      :class="{ overlay: isFormOpen }"
+    ></div>
+    <p v-if="!isAlreadyLogin" class="login-gate" @click="formOpen ()">Login?</p>
+    <img
+      v-if="userPhoto && isAlreadyLogin"
+      :src="userPhoto"
+      alt="userprofile"
+      class="login-icon"
+      @click="formOpen ()"
+    >
+    <img
+      v-if="!userPhoto && isAlreadyLogin"
+      src="@/assets/avatar.png"
+      alt="avator"
+      class="login-icon"
+      @click="formOpen ()"
+    >
     <form v-if="isFormOpen && !isAlreadyLogin" @submit.prevent="submitForm ()" action="index.html" method="post">
       <div v-if="!isAlreadyLogin">
         <h3>{{ loginOrSignup }}</h3>
+        <div class="sns-login">
+          <li @click="googleLogin ()"><GoogleIcon /></li>
+          <li @click="facebookLogin ()"><FacebookIcon /></li>
+          <li @click="githubLogin ()"><GithubIcon /></li>
+          <li @click="twitterLogin ()"><TwitterIcon /></li>
+        </div>
         <div class="form-group">
-          <label>Email address</label>
+          <label>Email</label>
           <input
             v-if="!isLoginForm"
             v-model="email"
@@ -34,10 +58,10 @@
             type="password"
             class="form-control"
           >
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input">
-          <label class="form-check-label" for="exampleCheck1">Remember me</label>
+          <div class="form-check">
+            <input type="checkbox">
+            <label for="exampleCheck1">Remember me</label>
+          </div>
         </div>
         <div v-if="isError" class="error-message">
           <p>{{ errorCode }}</p>
@@ -54,18 +78,27 @@
         </p>
       </div>
     </form>
-    <div v-if="isFormOpen && isAlreadyLogin" class="logout-contents">
-      <p class="user-name">Hey Oku.</p>
-      <p class="logout-gate" @click="logoutUser ()">Log out.</p>
+    <div v-if="isFormOpen && isAlreadyLogin" class="user">
+      <img v-if="userPhoto" :src="userPhoto" alt="userprofile">
+      <img v-else src="@/assets/avatar.png" alt="avator">
+      <p class="user-name">{{ userName }}</p>
+      <p class="user-email">{{ userEmail }}</p>
+      <p class="user-twitterid">{{ userTwitterid }}</p>
+      <p class="logout-gate" @click="logoutUser ()">Log out</p>
     </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from 'firebase';
+import GoogleIcon from '@/assets/icons/GoogleIcon';
+import FacebookIcon from '@/assets/icons/FacebookIcon';
+import GithubIcon from '@/assets/icons/GithubIcon';
+import TwitterIcon from '@/assets/icons/TwitterIcon';
 
 export default {
   name: 'Login',
+  components: { GoogleIcon, FacebookIcon, GithubIcon, TwitterIcon },
   data () {
     return {
       isFormOpen: false,
@@ -76,28 +109,82 @@ export default {
       errorMessage: '',
       loginOrSignup: 'Login',
       anotherGate: 'Sign up',
-      welcomeSentence: 'Login?',
       bottomMessage: 'New to Sick-Poker-Timer?',
       email: '',
       password: '',
       loginEmail: '',
-      loginPassword: ''
+      loginPassword: '',
+      // user infoomation
+      userName: '',
+      userEmail: '',
+      userTwitterid: '',
+      userPhoto: ''
     }
   },
   mounted () {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.isAlreadyLogin = true;
-        this.welcomeSentence = 'Welcome';
+        this.userName = user.displayName;
+        this.userEmail = user.email;
+        this.userPhoto = user.photoURL;
         console.log('login');
+        console.log(user);
+        console.log(`name: ${user.displayName}`);
+        console.log(`email: ${user.email}`);
+        console.log(`emailVerified: ${user.emailVerified}`);
+        console.log(`photoURL: ${user.photoURL}`);
+        console.log(`isAnonymous: ${user.isAnonymous}`);
+        console.log(`uid: ${user.uid}`);
+        console.log(`providerData: ${user.providerData}`);
       } else {
         this.isAlreadyLogin = false;
-        this.welcomeSentence = 'Login?';
         console.log('logout');
       }
     });
   },
   methods: {
+    formOpen () {
+      this.isFormOpen = !this.isFormOpen;
+      this.$emit('switchOverlay');
+    },
+    googleLogin () {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(result => {
+        console.log(result.user);
+      }).catch(error => {
+        this.isError = true;
+        this.errorMessage = error.message;
+      });
+    },
+    facebookLogin () {
+      const provider = new firebase.auth.FacebookAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(result => {
+        console.log(result.user);
+      }).catch(error => {
+        this.isError = true;
+        this.errorMessage = error.message;
+      });
+    },
+    githubLogin () {
+      const provider = new firebase.auth.GithubAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(result => {
+        console.log(result.user);
+      }).catch(error => {
+        this.isError = true;
+        this.errorMessage = error.message;
+      });
+    },
+    twitterLogin () {
+      const provider = new firebase.auth.TwitterAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(userCredential => {
+        console.log(`this is ${userCredential.additionalUserInfo.username}`);
+        this.userTwitterid += `@${userCredential.additionalUserInfo.username}`
+      }).catch(error => {
+        this.isError = true;
+        this.errorMessage = error.message;
+      });
+    },
     submitForm () {
       if (this.isLoginForm && !this.isAlreadyLogin) {
         this.loginUser ();
@@ -156,6 +243,25 @@ export default {
     margin: 0;
     &:hover { cursor: pointer; }
   }
+  .login-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: 15px;
+    right: 5%;
+    margin: 0;
+    &:hover { cursor: pointer; }
+  }
+  .overlay {
+    background: rgba(#000, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+  }
   form {
     width: 75%;
     max-width: 700px;
@@ -169,7 +275,7 @@ export default {
     text-align: center;
     border-radius: 10px;
     h3 {
-      color: var(--currentTheme);
+      color: #aaa;
       margin: 20px 0 30px;
     }
     .form-group {
@@ -182,8 +288,29 @@ export default {
         margin: 0;
       }
       .warn { color: #777; }
+      .form-check {
+        color: #777;
+        font-size: 12.8px;
+        padding: 0;
+        margin-top: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        input {
+          margin: 2px 6px;
+        }
+        label {
+          margin: 0;
+        }
+      }
     }
-    .form-check { color: #aaa; }
+    .sns-login {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 30px 0;
+      li { list-style: none; }
+    }
     .error-message {
       margin: 15px 0;
       p {
@@ -223,25 +350,32 @@ export default {
       }
     }
   }
-  .logout-contents {
+  .user {
     color: #aaa;
-    width: 100px;
+    background: #222;
     position: absolute;
     top: 35px;
     right: 5%;
-    background: #222;
+    padding: 10px 20px;
     z-index: 100;
     text-align: center;
     border-radius: 10px;
-    .user-name { margin: 10px 5px; }
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 10px 0;
+    }
+    p { margin: 0; }
+    .user-name {
+      font-size: 20px;
+      font-weight: 600;
+    }
     .logout-gate {
-      color: var(--currentTheme);
+      color: #666;
       transition: 200ms;
       margin: 10px 15px;
-      &:hover {
-        border-bottom: 1px solid var(--currentTheme);
-        cursor: pointer;
-      }
+      &:hover { cursor: pointer; }
     }
   }
 }

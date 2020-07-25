@@ -1,18 +1,23 @@
 <template>
   <div class="timer">
-    <div class="circle" :class="{ circle_animation: r_status() }">
+    <div
+      class="circle"
+      :class="{ circle_animation: isClockStart }"
+    >
       <span class="flame">
-        <p class="part time">{{ r_timer().min }} : {{ r_timer().sec }}</p>
-        <h6 class="part level">LEVEL {{ r_level() }}</h6>
+        <p class="part time">
+          {{ timeRemaining.min }} : {{ timeRemaining.sec }}
+        </p>
+        <h6 class="part level">LEVEL {{ currentLevel }}</h6>
         <h6 class="part blinds">BLINDS</h6>
         <h6 class="part sbbb">
-          {{ r_strategy()[r_level()-1][0] }}/{{ r_strategy()[r_level()-1][1] }}
+          {{ gameStructure[currentLevel-1][0] }}/{{ gameStructure[currentLevel-1][1] }}
         </h6>
       </span>
     </div>
     <p class="nextbb">NEXT BLINDS :
       <span>
-        {{ r_strategy()[r_level()][0] }}/{{ r_strategy()[r_level()][1] }}
+        {{ gameStructure[currentLevel][0] }}/{{ gameStructure[currentLevel][1] }}
       </span>
     </p>
   </div>
@@ -24,19 +29,21 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    r_status () {
+  computed: {
+    isClockStart () {
       return this.$store.getters.g_status;
     },
-    r_timer () {
+    timeRemaining () {
       return this.$store.getters.g_timer;
     },
-    r_level () {
+    currentLevel () {
       return this.$store.getters.g_level;
     },
-    r_strategy () {
+    gameStructure () {
       return this.$store.getters.g_strategy;
     }
+  },
+  methods: {
   }
 }
 </script>
@@ -53,8 +60,10 @@ export default {
 .circle {
   position: relative;
   margin: 0 auto;
-  width: 400px;
-  height: 400px;
+  width: calc(100vw - 30px);
+  height: calc(100vw - 30px);
+  max-width: 400px;
+  max-height: 400px;
   background: #111;
   border-radius: 50%;
   overflow: hidden;

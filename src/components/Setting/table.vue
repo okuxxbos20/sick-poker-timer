@@ -10,8 +10,6 @@
         <b-th>Duration</b-th>
       </b-thead>
       <!-- table header -->
-
-      <!-- body -->
       <b-tbody
         v-for="(n, idx) in r_strategy"
         :key="n[idx]"
@@ -22,7 +20,6 @@
         <!-- level -->
         <b-td class="t-info">{{ idx + 1 }}</b-td>
         <!-- level -->
-
         <!-- SB -->
         <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_sbUp(idx)">
@@ -30,7 +27,7 @@
           </button>
           <input
             type="text"
-            class="strategy_input"
+            class="strategy-input"
             @input="c_sbInput(idx, $event.target.value)"
             v-model="r_strategy[idx][0]"
           >
@@ -39,7 +36,6 @@
           </button>
         </b-td>
         <!-- SB -->
-
         <!-- BB -->
         <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_bbUp(idx)">
@@ -47,7 +43,7 @@
           </button>
           <input
             type="text"
-            class="strategy_input"
+            class="strategy-input"
             @input="c_bbInput(idx, $event.target.value)"
             v-model="r_strategy[idx][1]"
           >
@@ -56,7 +52,6 @@
           </button>
         </b-td>
         <!-- BB -->
-
         <!-- Ante -->
         <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_anteUp(idx)">
@@ -64,7 +59,7 @@
           </button>
           <input
             type="text"
-            class="strategy_input"
+            class="strategy-input"
             @input="c_anteInput(idx, $event.target.value)"
             v-model="r_strategy[idx][2]"
           >
@@ -73,7 +68,6 @@
           </button>
         </b-td>
         <!-- Ante -->
-
         <!-- Duration -->
         <b-td noWrap class="t-info">
           <button type="button" class="btn" @click="c_durationUp(idx)">
@@ -81,7 +75,7 @@
           </button>
           <input
             type="text"
-            class="strategy_input"
+            class="strategy-input"
             @input="c_durationInput(idx, $event.target.value)"
             :value="r_strategy[idx][3]/60"
           >min
@@ -90,37 +84,28 @@
           </button>
         </b-td>
         <!-- Duration -->
-
       </b-tbody>
-      <!-- body -->
-
     </b-table-simple>
 
-    <div class="row">
-      <!-- lebel button -->
-      <div class="col-md-4 offset-md-2">
-        <button
-          type="button" class="strategy_btn" @click="c_strategyAdd()">
+    <div class="level-and-break">
+      <div class="box">
+        <button type="button" class="strategy-btn" @click="c_strategyAdd()">
           <i class="fas fa-plus"></i>
         </button>
-        <span class="strategy_span" style="margin: 0 3.345px">LEVEL</span>
-        <button type="button" class="strategy_btn" @click="c_strategyRemove()">
+        <span class="strategy-span" style="margin: 0 3.345px">LEVEL</span>
+        <button type="button" class="strategy-btn" @click="c_strategyRemove()">
           <i class="fas fa-minus"></i>
         </button>
       </div>
-      <!-- lebel button -->
-      <!-- break button -->
-      <div class="col-md-4">
-        <button type="button" class="strategy_btn" @click="c_breakAdd()">
+      <div class="box">
+        <button type="button" class="strategy-btn" @click="c_breakAdd()">
           <i class="fas fa-plus"></i>
         </button>
-        <span class="strategy_span">BREAK</span>
-        <button type="button" class="strategy_btn" @click="c_breakRemove()">
+        <span class="strategy-span">BREAK</span>
+        <button type="button" class="strategy-btn" @click="c_breakRemove()">
           <i class="fas fa-minus"></i>
         </button>
       </div>
-      <!-- break button -->
-
     </div>
 
   </div>
@@ -209,9 +194,6 @@ export default {
     c_breakRemove () {
       this.$store.commit('m_breakRemove');
     }
-    // r_strategy () {
-    //   return this.$store.getters.g_strategy;
-    // }
   },
   computed: {
     r_strategy: function () {
@@ -268,7 +250,7 @@ export default {
       background: var(--currentTheme);
     }
   }
-  .strategy_input {
+  .strategy-input {
     color: #aaa;
     text-align: center;
     width: 45px;
@@ -284,26 +266,36 @@ export default {
     }
   }
 }
-.strategy_btn {
-  color: var(--currentTheme);
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
-  padding-top: 5px;
-  margin: 20px 15px;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  transition: 0.2s;
-  &:hover {
-    color: #111;
-    background: var(--currentTheme);
+.level-and-break {
+  display: flex;
+  flex-direction: column;
+  @media screen and (min-width: 480px) {
+    flex-direction: row;
   }
-  &:focus { outline: none; }
-}
-.strategy_span {
-  color: var(--currentTheme);
-  font-size: 20px;
-  font-weight: 350;
+  justify-content: center;
+  .box {
+    .strategy-btn {
+      color: var(--currentTheme);
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      padding-top: 5px;
+      margin: 20px 15px;
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      transition: 0.2s;
+      &:hover {
+        color: #111;
+        background: var(--currentTheme);
+      }
+      &:focus { outline: none; }
+    }
+    .strategy-span {
+      color: var(--currentTheme);
+      font-size: 20px;
+      font-weight: 350;
+    }
+  }
 }
 </style>
