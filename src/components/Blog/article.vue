@@ -1,20 +1,18 @@
 <template>
   <div class="article">
-    <BlogHeader />
+    <BlogHeader path="/blog"/>
     <div class="contents">
-      <img class="top-img" src="@/assets/img/2018wsop.jpg" alt="img">
+      <img class="top-img" :src="post.img" alt="img">
       <div class="box">
-        <h3 class="title">This is title</h3>
+        <h3 class="title">{{ post.title }}</h3>
         <div class="status">
-          <p class="date">20200730</p>
-          <p class="name"><code>Phil Williams</code></p>
-          <HeartIcon class="heart-icon" :likes="card.likes"/>
+          <p class="date">{{ post.modifiedAt | dayFormat }}</p>
+          <p class="name"><code>{{ post.author }}</code></p>
+          <HeartIcon class="heart-icon" :likes="post.likes"/>
         </div>
-        <p class="prologue">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p class="prologue">{{ post.prologue }}</p>
         <div class="tags">
-          <span>#wsop</span>
-          <span>#LasVegas</span>
-          <span>#2020</span>
+          <span v-for="(tag, idx) in post.tags" :key="idx">#{{ tag }}</span>
         </div>
         <div class="index">
           <ul>
@@ -29,16 +27,42 @@
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import BlogHeader from './components/BlogHeader';
 import HeartIcon from '@/assets/icons/HeartIcon';
 
 export default {
   components: { BlogHeader, HeartIcon },
+  created() {
+    const id = this.$route.path.substr(9);
+    firebase.firestore().collection('article').doc(id)
+      .get().then((article) => this.post = article.data());
+  },
+  filters: {
+    dayFormat(time) {
+      const sec = time.seconds;
+      const nano = time.nanoseconds;
+      const date = new Date(sec * 1000 + nano / 1000000);
+      const year = date.getFullYear();
+      const monthNum = date.getMonth();
+      const monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = monthArr[monthNum];
+      const day = date.getDate();
+      const result = `${year} ${month} ${day}`
+      return result;
+    },
+    shortenPreview(text) {
+      if (text.length > 200) {
+        return text.substr(0, 200);
+      } else {
+        return text
+      }
+    }
+  },
   data() {
     return {
-      card: {
-        likes: 9877
-      }
+      post: null
     }
   }
 }
@@ -98,13 +122,15 @@ export default {
       }
       .tags {
         margin: 15px 0 0 0;
+        display: flex;
+        flex-direction: row;
         span {
           color: var(--currentTheme);
           border: 1px solid var(--currentTheme);
           opacity: 0.8;
           padding: 2px 8px;
           margin: 0 15px 0 0;
-          transition: 200ms;
+          transition: 150ms;
           &:hover {
             cursor: pointer;
             color: #eee;

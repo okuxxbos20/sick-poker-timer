@@ -2,71 +2,80 @@
   <div class="blog">
     <BlogHeader />
     <main>
-      <div class="card">
-        <h3 class="title">{{ card.title }}</h3>
+      <div v-for="(article, idx) in articles" :key="idx" class="card">
+        <h3 class="title">{{ article.title }}</h3>
         <div class="status">
-          <code class="date">{{ card.date }}</code>
-          <HeartIcon class="heart-icon" :likes="card.likes"/>
+          <code class="date">{{ article.createdAt | dayFormat }}</code>
+          <HeartIcon class="heart-icon" :likes="article.likes"/>
         </div>
         <img
-          v-if="!card.src"
+          v-if="!article.img"
           src="@/assets/img/noImage.png"
           alt="noImg"
         >
         <img
           v-else
           class="posted-img"
-          :src="card.src"
-          @click="moveTo(card.id)"
+          :src="article.img"
+          @click="moveTo(article.id)"
           alt="postImg"
         >
-        <p class="sentence">{{ card.sentence }}</p>
+        <p class="sentence">{{ article.prologue | shortenPreview }}</p>
       </div>
-      <!-- <div class="card">
-        <h3 class="title">{{ card.title }}</h3>
-        <div class="status">
-          <code class="date">{{ card.date }}</code>
-          <HeartIcon class="heart-icon" :likes="card.likes"/>
-        </div>
-        <img src="@/assets/img/2019wsop.jpg" alt="postImg">
-        <p class="sentence">{{ card.sentence }}</p>
-      </div>
-      <div class="card">
-        <h3 class="title">{{ card.title }}</h3>
-        <div class="status">
-          <code class="date">{{ card.date }}</code>
-          <HeartIcon class="heart-icon" :likes="card.likes"/>
-        </div>
-        <img src="@/assets/img/wsopRing.jpg" alt="postImg">
-        <p class="sentence">{{ card.sentence }}</p>
-      </div> -->
     </main>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import BlogHeader from './components/BlogHeader';
 import HeartIcon from '@/assets/icons/HeartIcon';
 
 export default {
   components: { BlogHeader, HeartIcon },
-  data() {
-    return {
-      searchQuery: '',
-      card: {
-        id: 2345,
-        title: 'This is Title',
-        date: 20200722,
-        likes: 77676,
-        src: require('@/assets/img/2018wsop.jpg'),
-        sentence: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  filters: {
+    dayFormat(time) {
+      const sec = time.seconds;
+      const nano = time.nanoseconds;
+      const date = new Date(sec * 1000 + nano / 1000000);
+      let year = date.getFullYear();
+      const thisYear = new Date().getFullYear();
+      year = (year === thisYear) ? '' : year;
+      const monthNum = date.getMonth();
+      const monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = monthArr[monthNum];
+      const day = date.getDate();
+      const result = `${year} ${month} ${day}`
+      return result;
+    },
+    shortenPreview(text) {
+      if (text.length > 200) {
+        return text.substr(0, 200);
+      } else {
+        return text
       }
     }
+  },
+  data() {
+    return {
+      articles: []
+    }
+  },
+  created() {
+    firebase.firestore().collection('article').get().then((article) => {
+      article.forEach((doc) => {
+        const items = doc.data();
+        items.id = doc.id;
+        this.articles.push(items);
+      });
+      console.log(this.articles);
+    });
   },
   methods: {
     moveTo(id) {
       console.log(id);
-      // this.$router.push({ path: `/article/${id}` });
+      this.$router.push({ name: 'article', params: { id } });
     }
   }
 }

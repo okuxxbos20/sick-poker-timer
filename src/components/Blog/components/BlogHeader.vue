@@ -1,6 +1,6 @@
 <template>
   <header>
-    <router-link to="/">
+    <router-link :to="path">
       <ArrowleftIcon class="arrow-left-icon" />
     </router-link>
     <input
@@ -17,7 +17,18 @@ import ArrowleftIcon from '@/assets/icons/ArrowleftIcon';
 
 export default {
   name: 'BlogHeader',
-  components: { ArrowleftIcon }
+  components: { ArrowleftIcon },
+  data() {
+    return {
+      searchQuery: '',
+    }
+  },
+  props: {
+    path: {
+      type: String,
+      default: '/'
+    }
+  }
 }
 </script>
 
