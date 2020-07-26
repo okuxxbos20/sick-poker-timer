@@ -12,7 +12,7 @@ export const routes = [
     component: BlogComp,
     name: 'blog'
   }, {
-    path: '/article',
+    path: '/article/:id',
     component: ArticleComp,
     name: 'article'
   }
