@@ -14,7 +14,7 @@
     >
     <img
       v-if="!userPhoto && isAlreadyLogin"
-      src="@/assets/avatar.png"
+      src="@/assets/img/avatar.png"
       alt="avator"
       class="login-icon"
       @click="formOpen ()"
@@ -80,7 +80,7 @@
     </form>
     <div v-if="isFormOpen && isAlreadyLogin" class="user">
       <img v-if="userPhoto" :src="userPhoto" alt="userprofile">
-      <img v-else src="@/assets/avatar.png" alt="avator">
+      <img v-else src="@/assets/img/avatar.png" alt="avator">
       <p class="user-name">{{ userName }}</p>
       <p class="user-email">{{ userEmail }}</p>
       <p class="user-twitterid">{{ userTwitterid }}</p>
