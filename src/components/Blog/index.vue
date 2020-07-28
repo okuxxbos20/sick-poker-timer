@@ -69,12 +69,10 @@ export default {
         items.id = doc.id;
         this.articles.push(items);
       });
-      console.log(this.articles);
     });
   },
   methods: {
     moveTo(id) {
-      console.log(id);
       this.$router.push({ name: 'article', params: { id } });
     }
   }

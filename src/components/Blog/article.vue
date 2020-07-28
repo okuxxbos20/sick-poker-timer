@@ -11,15 +11,18 @@
           <HeartIcon class="heart-icon" :likes="post.likes"/>
         </div>
         <p class="prologue">{{ post.prologue }}</p>
-        <div class="tags">
-          <span v-for="(tag, idx) in post.tags" :key="idx">#{{ tag }}</span>
+        <div v-if="post.tags.length > 0" class="tags">
+          <span v-for="(tag, idx) in post.tags" :key="idx">
+            #{{ tag }}
+          </span>
         </div>
-        <div class="index">
+        <div v-if="post.index.length > 0" class="index">
           <ul>
-            <li>first</li>
-            <li>second</li>
-            <li>third</li>
+            <li v-for="(item, idx) in post.index" :key="idx">{{ item }}</li>
           </ul>
+        </div>
+        <div class="sentence">
+          {{ post.sentence }}
         </div>
       </div>
     </div>
