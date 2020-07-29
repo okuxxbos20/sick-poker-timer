@@ -1,61 +1,100 @@
 <template>
-  <div class="form-place">
-    <form>
-      <div class="flame">
-        <PhotoIcon />
-        <p>upload photo</p>
-      </div>
-      <input
-        v-model="articleData.title"
-        type="text"
-        class="input title-form"
-        placeholder="title"
-      >
-      <textarea
-        v-model="articleData.prologue"
-        class="input prologue-form"
-        name="name"
-        row="4"
-        cols="20"
-        placeholder="abstruct"
-      ></textarea>
-      <div class="tags-form">
-        <HashtagIcon class="hashtag-icon" />
-        <input
-          v-for="(placeholder, idx) in tagsPlaceholder"
-          v-model="articleData.index[idx]"
-          type="text"
-          :key="idx"
-          :placeholder="placeholder"
-        >
-      </div>
-      <div class="main-form-insert">
-        <span @click="openOptions()">
-          <PlusIcon class="plus-icon"/>
-        </span>
-        <div v-if="isOptionOpen" class="insert-options">
-          <PhotoIcon class="option-icon" />
-          <BarchartIcon class="option-icon" />
+  <div class="overall">
+    <ModeSwitch
+      :is-preview-mode="isPreviewMode"
+      @switchMode="switchMode"
+    />
+    <div v-if="!isPreviewMode" class="form-place">
+      <form>
+        <div class="flame">
+          <div v-if="!articleData.img" class="upload-box">
+            <label>
+              <PhotoIcon class="photo-icon" />
+              Upload Photo
+              <input ref="file" type="file" @change="imgUpload">
+            </label>
+          </div>
+          <div v-if="articleData.img" class="uploaded-box">
+            <img :src="articleData.img" alt="uploaded-img">
+          </div>
         </div>
+        <div  v-if="articleData.img" class="reupload">
+          <label>
+            <PhotoIcon class="photo-icon" />
+            <p>Re-Upload ?</p>
+            <input ref="file" type="file" @change="imgUpload">
+          </label>
+        </div>
+        <input
+          v-model="articleData.title"
+          type="text"
+          class="input title-form"
+          placeholder="title"
+        >
+        <textarea
+          v-model="articleData.prologue"
+          class="input prologue-form"
+          name="name"
+          row="4"
+          cols="20"
+          placeholder="abstruct"
+        />
+        <div class="tags-form">
+          <HashtagIcon class="hashtag-icon" />
+          <input
+            v-for="(placeholder, idx) in tagsPlaceholder"
+            v-model="articleData.index[idx]"
+            type="text"
+            :key="idx"
+            :placeholder="placeholder"
+          >
+        </div>
+        <div class="main-form-insert">
+          <textarea
+            v-model="articleData.sentence"
+            rows="8"
+            cols="80"
+          />
+          <!-- option -->
+          <div class="option-select-part">
+            <span @click="openOptions()">
+              <PlusIcon class="plus-icon"/>
+            </span>
+            <div v-if="isOptionOpen" class="insert-options">
+              <PhotoIcon class="option-icon" />
+              <BarchartIcon class="option-icon" />
+            </div>
+          </div>
+          <!-- option -->
+        </div>
+      </form>
+      <div class="preview">
+        <p>{{ articleData.title }}</p>
+        <p>{{ articleData.prologue }}</p>
+        <p>{{ articleData.index }}</p>
       </div>
-    </form>
-    <div class="preview">
-      <p>{{ articleData.title }}</p>
-      <p>{{ articleData.prologue }}</p>
-      <p>{{ articleData.index }}</p>
-      <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
+    </div>
+    <div v-if="isPreviewMode" class="preview-place">
+      <p>preview mode...</p>
     </div>
   </div>
 </template>
 
 <script>
+import ModeSwitch from './switch';
 import PhotoIcon from '@/assets/icons/PhotoIcon';
 import HashtagIcon from '@/assets/icons/HashtagIcon';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import BarchartIcon from '@/assets/icons/BarchartIcon';
 
 export default {
-  components: { PhotoIcon, HashtagIcon, PlusIcon, BarchartIcon },
+  components: {
+    ModeSwitch,
+    PhotoIcon,
+    HashtagIcon,
+    PlusIcon,
+    BarchartIcon
+  },
   data() {
     return {
       articleData: {
@@ -71,24 +110,62 @@ export default {
         title: ''
       },
       tagsPlaceholder: ['set', 'up', 'to', 'five', 'tags'],
-      isOptionOpen: false
+      isOptionOpen: false,
+      isPreviewMode: false
     }
   },
   methods: {
+    switchMode(mode) {
+      if (mode === 'toPreview') {
+        this.isPreviewMode = true;
+      }
+      if (mode === 'toEditor') {
+        this.isPreviewMode = false;
+      }
+    },
     openOptions() {
-      console.log('yes');
       this.isOptionOpen = !this.isOptionOpen;
+    },
+    async imgUpload(event) {
+      const files = event.target.files || event.dataTransfer.files;
+      const file = files[0];
+      if (this.checkFile(file)) {
+        const picture = await this.getBase64(file);
+        this.articleData.img = picture;
+      }
+    },
+    getBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      })
+    },
+    checkFile(file) {
+      let result = true;
+      const sizeLimit = 5000000;
+      if (!file) {
+        result = false;
+      }
+      if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+        result = false;
+      }
+      if (file.size > sizeLimit) {
+        result = false;
+      }
+      return result
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.overall {
+}
 .form-place {
   margin-top: 0;
-  @media screen and (min-width: 480px) {
-    margin-top: 30px;
-  }
+  @media screen and (min-width: 480px) { margin-top: 30px; }
   form {
     // border: 1px solid #999;
     width: 95%;
@@ -103,9 +180,68 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 65px 0;
+      padding: 5px;
       margin: 0;
-      p { color: #666; }
+      .upload-box {
+        label {
+          color: #666;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin: 50px 0;
+          &:hover { cursor: pointer; }
+          .photo-icon {
+            color: var(--currentTheme);
+            opacity: 0.5;
+            transition: 300ms;
+            &:hover {
+              opacity: 1.0;
+            }
+          }
+          input[type="file"]::-webkit-file-upload-button { display: none; }
+        }
+      }
+      .uploaded-box {
+        width: 100%;
+        height: auto;
+        img {
+          width: 100%;
+          height: auto;
+        }
+        label {
+          color: #666;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          input[type="file"]::-webkit-file-upload-button { display: none; }
+        }
+      }
+    }
+    .reupload {
+      color: var(--currentTheme);
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px 0;
+        transition: 200ms;
+        &:hover {
+          transform: scale(1.1);
+          cursor: pointer;
+        }
+        input[type="file"]::-webkit-file-upload-button { display: none; }
+        .photo-icon {
+          width: 30px;
+          height: 30px;
+        }
+        p {
+          font-size: 12px;
+          margin: 0;
+        }
+      }
     }
     .input {
       color: #666;
@@ -154,33 +290,45 @@ export default {
     .main-form-insert {
       width: 100%;
       margin: 30px 0;
-      .plus-icon {
+      textarea {
         color: #666;
-        border: 1px solid #666;
-        padding: 10px;
-        margin: 0 auto;
-        transition: 200ms;
-        &:hover {
-          color: var(--currentTheme);
-          border: 1px solid var(--currentTheme);
-          cursor: pointer;
-        }
+        // background: rgba(#000, 0.5);
+        background: transparent;
+        border: none;
+        padding: 8px 12px;
+        width: 100%;
+        resize: none;
+        &:focus { outline: none; }
       }
-      .insert-options {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        .option-icon {
+      .option-select-part {
+        .plus-icon {
           color: #666;
           border: 1px solid #666;
-          width: 50px;
-          height: 50px;
           padding: 10px;
-          margin: 20px 10px;
+          margin: 0 auto;
+          transition: 200ms;
           &:hover {
             color: var(--currentTheme);
             border: 1px solid var(--currentTheme);
             cursor: pointer;
+          }
+        }
+        .insert-options {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          .option-icon {
+            color: #666;
+            border: 1px solid #666;
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+            margin: 20px 10px;
+            &:hover {
+              color: var(--currentTheme);
+              border: 1px solid var(--currentTheme);
+              cursor: pointer;
+            }
           }
         }
       }
