@@ -15,16 +15,14 @@ export default {
 
 <style lang="scss" scoped>
 .icon {
-  width: 12.5%;
-  height: 12.5%;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   margin: 0 20px;
   transition: 200ms;
   &:hover { cursor: pointer; }
   path {
-    fill: #333;
     opacity: 0.8;
-    &:hover { opacity: 1.0; }
   }
 }
 </style>
