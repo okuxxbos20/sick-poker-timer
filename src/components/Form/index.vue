@@ -17,16 +17,32 @@
         name="name"
         row="4"
         cols="20"
-        placeholder="prologue"
+        placeholder="abstruct"
       ></textarea>
-      <div class="tags-form" @click="openTagsForm()">
+      <div class="tags-form">
         <HashtagIcon class="hashtag-icon" />
-        <input v-if="isTagsOpen" type="text">
+        <input
+          v-for="(placeholder, idx) in tagsPlaceholder"
+          v-model="articleData.index[idx]"
+          type="text"
+          :key="idx"
+          :placeholder="placeholder"
+        >
+      </div>
+      <div class="main-form-insert">
+        <span @click="openOptions()">
+          <PlusIcon class="plus-icon"/>
+        </span>
+        <div v-if="isOptionOpen" class="insert-options">
+          <PhotoIcon class="option-icon" />
+          <BarchartIcon class="option-icon" />
+        </div>
       </div>
     </form>
     <div class="preview">
       <p>{{ articleData.title }}</p>
       <p>{{ articleData.prologue }}</p>
+      <p>{{ articleData.index }}</p>
       <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
     </div>
   </div>
@@ -35,26 +51,33 @@
 <script>
 import PhotoIcon from '@/assets/icons/PhotoIcon';
 import HashtagIcon from '@/assets/icons/HashtagIcon';
+import PlusIcon from '@/assets/icons/PlusIcon';
+import BarchartIcon from '@/assets/icons/BarchartIcon';
 
 export default {
-  components: { PhotoIcon, HashtagIcon },
+  components: { PhotoIcon, HashtagIcon, PlusIcon, BarchartIcon },
   data() {
     return {
-      isTagsOpen: false,
       articleData: {
-        title: '',
         author: '',
+        createdAt: '',
+        img: '',
+        index: [],
         likes: 0,
+        modifiedAt: '',
         prologue: '',
+        sentence: '',
         tags: [],
-        index: []
-      }
+        title: ''
+      },
+      tagsPlaceholder: ['set', 'up', 'to', 'five', 'tags'],
+      isOptionOpen: false
     }
   },
   methods: {
-    openTagsForm() {
-      console.log('open tags form!');
-      this.isTagsOpen = true;
+    openOptions() {
+      console.log('yes');
+      this.isOptionOpen = !this.isOptionOpen;
     }
   }
 }
@@ -82,11 +105,11 @@ export default {
       justify-content: center;
       padding: 65px 0;
       margin: 0;
-      p { color: #555; }
+      p { color: #666; }
     }
     .input {
       color: #666;
-      background: #202020;
+      // background: #222;
       background: transparent;
       border: none;
       margin: 10px 0;
@@ -104,11 +127,11 @@ export default {
     .tags-form {
       display: flex;
       flex-direction: row;
+      width: 100%;
       .hashtag-icon {
         color: var(--currentTheme);
         width: 30px;
         height: 30px;
-        border: 1px solid var(--currentTheme);
         transition: 500ms;
         &:hover {
           color: #111;
@@ -118,7 +141,48 @@ export default {
         }
       }
       input {
-        border: 1px solid #eee;
+        color: var(--currentTheme);
+        font-weight: 600;
+        border: none;
+        background: #222;
+        padding: 3px 10px;
+        width: calc((100% - 100px) / 5);
+        margin-right: 10px;
+        &:focus { outline: none; }
+      }
+    }
+    .main-form-insert {
+      width: 100%;
+      margin: 30px 0;
+      .plus-icon {
+        color: #666;
+        border: 1px solid #666;
+        padding: 10px;
+        margin: 0 auto;
+        transition: 200ms;
+        &:hover {
+          color: var(--currentTheme);
+          border: 1px solid var(--currentTheme);
+          cursor: pointer;
+        }
+      }
+      .insert-options {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .option-icon {
+          color: #666;
+          border: 1px solid #666;
+          width: 50px;
+          height: 50px;
+          padding: 10px;
+          margin: 20px 10px;
+          &:hover {
+            color: var(--currentTheme);
+            border: 1px solid var(--currentTheme);
+            cursor: pointer;
+          }
+        }
       }
     }
   }
