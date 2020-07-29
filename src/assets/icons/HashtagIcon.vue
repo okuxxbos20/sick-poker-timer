@@ -19,7 +19,7 @@ export default {
   margin: 0 10px;
   transition: 200ms;
   path {
-    fill: var(--currentTheme);
+    // fill: var(--currentTheme);
     opacity: 0.8;
     &:hover { opacity: 1.0; }
   }

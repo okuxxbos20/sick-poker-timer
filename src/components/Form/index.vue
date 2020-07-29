@@ -19,8 +19,9 @@
         cols="20"
         placeholder="prologue"
       ></textarea>
-      <div class="tags-form">
-        <HashtagIcon class="hashtag-icon"/>
+      <div class="tags-form" @click="openTagsForm()">
+        <HashtagIcon class="hashtag-icon" />
+        <input v-if="isTagsOpen" type="text">
       </div>
     </form>
     <div class="preview">
@@ -39,6 +40,7 @@ export default {
   components: { PhotoIcon, HashtagIcon },
   data() {
     return {
+      isTagsOpen: false,
       articleData: {
         title: '',
         author: '',
@@ -47,6 +49,12 @@ export default {
         tags: [],
         index: []
       }
+    }
+  },
+  methods: {
+    openTagsForm() {
+      console.log('open tags form!');
+      this.isTagsOpen = true;
     }
   }
 }
@@ -77,9 +85,9 @@ export default {
       p { color: #555; }
     }
     .input {
-      color: #aaa;
+      color: #666;
       background: #202020;
-      // background: transparent;
+      background: transparent;
       border: none;
       margin: 10px 0;
       &:focus { outline: none; }
@@ -87,22 +95,30 @@ export default {
     .title-form {
       height: 42px;
       font-size: 35px;
+      margin-top: 30px;
     }
     .prologue-form {
       font-size: 20px;
+      resize: none;
     }
     .tags-form {
       display: flex;
       flex-direction: row;
       .hashtag-icon {
+        color: var(--currentTheme);
         width: 30px;
         height: 30px;
         border: 1px solid var(--currentTheme);
+        transition: 500ms;
         &:hover {
+          color: #111;
           background: var(--currentTheme);
-          color: #fff;
+          border: none;
           cursor: pointer;
         }
+      }
+      input {
+        border: 1px solid #eee;
       }
     }
   }
