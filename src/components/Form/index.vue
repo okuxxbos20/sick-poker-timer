@@ -4,7 +4,7 @@
       :is-preview-mode="isPreviewMode"
       @switchMode="switchMode"
     />
-    <div v-if="!isPreviewMode" class="form-place">
+    <div v-show="!isPreviewMode" class="form-place">
       <form>
         <div class="flame">
           <div v-if="!articleData.img" class="upload-box">
@@ -74,8 +74,8 @@
         <p>{{ articleData.index }}</p>
       </div>
     </div>
-    <div v-if="isPreviewMode" class="preview-place">
-      <p>preview mode...</p>
+    <div v-show="isPreviewMode" class="preview-place">
+      <p>{{ articleData }}</p>
     </div>
   </div>
 </template>
@@ -116,12 +116,8 @@ export default {
   },
   methods: {
     switchMode(mode) {
-      if (mode === 'toPreview') {
-        this.isPreviewMode = true;
-      }
-      if (mode === 'toEditor') {
-        this.isPreviewMode = false;
-      }
+      if (mode === 'toPreview') this.isPreviewMode = true;
+      if (mode === 'toEditor') this.isPreviewMode = false;
     },
     openOptions() {
       this.isOptionOpen = !this.isOptionOpen;
@@ -193,10 +189,8 @@ export default {
           .photo-icon {
             color: var(--currentTheme);
             opacity: 0.5;
-            transition: 300ms;
-            &:hover {
-              opacity: 1.0;
-            }
+            transition: 200ms;
+            &:hover { opacity: 1.0; }
           }
           input[type="file"]::-webkit-file-upload-button { display: none; }
         }

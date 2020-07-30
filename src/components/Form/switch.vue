@@ -55,6 +55,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    &:hover { cursor: pointer; }
   }
   @mixin border($top-left, $top-right, $btm-right, $btm-left) {
     border-top-left-radius: $top-left;
