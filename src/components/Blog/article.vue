@@ -74,7 +74,7 @@ export default {
 <style lang="scss" scoped>
 .article {
   overflow-x: hidden;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
   .contents {
     text-align: left;
     width: 100%;

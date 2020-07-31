@@ -4,13 +4,13 @@
       :is-preview-mode="isPreviewMode"
       @switchMode="switchMode"
     />
-    <div v-show="!isPreviewMode" class="form-place">
+    <div v-show="!isPreviewMode" class="editor-place">
       <form>
         <div class="flame">
           <div v-if="!articleData.img" class="upload-box">
             <label>
               <PhotoIcon class="photo-icon" />
-              Upload Photo
+              <p>Upload Photo.</p>
               <input ref="file" type="file" @change="imgUpload">
             </label>
           </div>
@@ -43,7 +43,7 @@
           <HashtagIcon class="hashtag-icon" />
           <input
             v-for="(placeholder, idx) in tagsPlaceholder"
-            v-model="articleData.index[idx]"
+            v-model="articleData.tags[idx]"
             type="text"
             :key="idx"
             :placeholder="placeholder"
@@ -68,24 +68,58 @@
           <!-- option -->
         </div>
       </form>
-      <div class="preview">
-        <p>{{ articleData.title }}</p>
-        <p>{{ articleData.prologue }}</p>
-        <p>{{ articleData.index }}</p>
-      </div>
     </div>
     <div v-show="isPreviewMode" class="preview-place">
-      <p>{{ articleData }}</p>
+      <div class="contents">
+        <img
+          v-if="articleData.img"
+          class="top-img"
+          :src="articleData.img"
+        >
+        <div
+          v-if="!articleData.img"
+          class="no-img"
+        >
+          <PhotoIcon />
+          <p>No Photo.</p>
+        </div>
+        <div class="box">
+          <h3 class="title">{{ articleData.title }}</h3>
+          <div class="status">
+            <p class="date">{{ articleData.modifiedAt | dayFormat }}</p>
+            <p class="name"><code>{{ articleData.author }}</code></p>
+            <HeartIcon class="heart-icon" :likes="articleData.likes"/>
+          </div>
+          <p class="prologue">{{ articleData.prologue }}</p>
+          <div v-if="articleData.tags.length > 0" class="tags">
+            <label v-for="(tag, idx) in articleData.tags" :key="idx">
+              <span>
+                #{{ tag }}
+              </span>
+            </label>
+          </div>
+          <div v-if="articleData.index.length > 0" class="index">
+            <ul>
+              <li v-for="(item, idx) in articleData.index" :key="idx">{{ item }}</li>
+            </ul>
+          </div>
+          <div class="sentence">
+            {{ articleData.sentence }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import ModeSwitch from './switch';
+import firebase from 'firebase';
+import ModeSwitch from './components/ModeSwitch';
 import PhotoIcon from '@/assets/icons/PhotoIcon';
 import HashtagIcon from '@/assets/icons/HashtagIcon';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import BarchartIcon from '@/assets/icons/BarchartIcon';
+import HeartIcon from '@/assets/icons/HeartIcon';
 
 export default {
   components: {
@@ -93,7 +127,23 @@ export default {
     PhotoIcon,
     HashtagIcon,
     PlusIcon,
-    BarchartIcon
+    BarchartIcon,
+    HeartIcon
+  },
+  filters: {
+    dayFormat(date) {
+      const year = date.getFullYear();
+      const monthNum = date.getMonth();
+      const monthArr = [
+        'Jan', 'Feb', 'Mar', 'Apr',
+        'May', 'Jun', 'Jul', 'Aug',
+        'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+      const month = monthArr[monthNum];
+      const day = date.getDate();
+      const result = `${year} ${month} ${day}`
+      return result;
+    }
   },
   data() {
     return {
@@ -103,9 +153,8 @@ export default {
         img: '',
         index: [],
         likes: 0,
-        modifiedAt: '',
+        modifiedAt: new Date(),
         prologue: '',
-        sentence: '',
         tags: [],
         title: ''
       },
@@ -113,6 +162,15 @@ export default {
       isOptionOpen: false,
       isPreviewMode: false
     }
+  },
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.articleData.author = user.displayName;
+      } else {
+        this.articleData.author = 'your name';
+      }
+    });
   },
   methods: {
     switchMode(mode) {
@@ -158,172 +216,258 @@ export default {
 
 <style lang="scss" scoped>
 .overall {
-}
-.form-place {
-  margin-top: 0;
-  @media screen and (min-width: 480px) { margin-top: 30px; }
-  form {
-    // border: 1px solid #999;
-    width: 95%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    .flame {
-      border: 7px dashed #444;
-      border-radius: 15px;
+  .editor-place {
+    margin-top: 0;
+    @media screen and (min-width: 480px) { margin-top: 30px; }
+    form {
+      width: 95%;
+      max-width: 800px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 5px;
-      margin: 0;
-      .upload-box {
-        label {
-          color: #666;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin: 50px 0;
-          &:hover { cursor: pointer; }
-          .photo-icon {
-            color: var(--currentTheme);
-            opacity: 0.5;
-            transition: 200ms;
-            &:hover { opacity: 1.0; }
-          }
-          input[type="file"]::-webkit-file-upload-button { display: none; }
-        }
-      }
-      .uploaded-box {
-        width: 100%;
-        height: auto;
-        img {
-          width: 100%;
-          height: auto;
-        }
-        label {
-          color: #666;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          input[type="file"]::-webkit-file-upload-button { display: none; }
-        }
-      }
-    }
-    .reupload {
-      color: var(--currentTheme);
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      label {
+      margin: 0 auto;
+      .flame {
+        border: 7px dashed #444;
+        border-radius: 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 10px 0;
-        transition: 200ms;
-        &:hover {
-          transform: scale(1.1);
-          cursor: pointer;
+        justify-content: center;
+        padding: 5px;
+        margin: 0;
+        .upload-box {
+          label {
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 50px 0;
+            &:hover { cursor: pointer; }
+            .photo-icon {
+              color: var(--currentTheme);
+              opacity: 0.5;
+              transition: 200ms;
+              &:hover { opacity: 1.0; }
+            }
+            input[type="file"]::-webkit-file-upload-button { display: none; }
+          }
         }
-        input[type="file"]::-webkit-file-upload-button { display: none; }
-        .photo-icon {
-          width: 30px;
-          height: 30px;
-        }
-        p {
-          font-size: 12px;
-          margin: 0;
+        .uploaded-box {
+          width: 100%;
+          height: auto;
+          img {
+            width: 100%;
+            height: auto;
+          }
+          label {
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            input[type="file"]::-webkit-file-upload-button { display: none; }
+          }
         }
       }
-    }
-    .input {
-      color: #666;
-      // background: #222;
-      background: transparent;
-      border: none;
-      margin: 10px 0;
-      &:focus { outline: none; }
-    }
-    .title-form {
-      height: 42px;
-      font-size: 35px;
-      margin-top: 30px;
-    }
-    .prologue-form {
-      font-size: 20px;
-      resize: none;
-    }
-    .tags-form {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      .hashtag-icon {
+      .reupload {
         color: var(--currentTheme);
-        width: 30px;
-        height: 30px;
-        transition: 500ms;
-        &:hover {
-          color: #111;
-          background: var(--currentTheme);
-          border: none;
-          cursor: pointer;
-        }
-      }
-      input {
-        color: var(--currentTheme);
-        font-weight: 600;
-        border: none;
-        background: #222;
-        padding: 3px 10px;
-        width: calc((100% - 100px) / 5);
-        margin-right: 10px;
-        &:focus { outline: none; }
-      }
-    }
-    .main-form-insert {
-      width: 100%;
-      margin: 30px 0;
-      textarea {
-        color: #666;
-        // background: rgba(#000, 0.5);
-        background: transparent;
-        border: none;
-        padding: 8px 12px;
-        width: 100%;
-        resize: none;
-        &:focus { outline: none; }
-      }
-      .option-select-part {
-        .plus-icon {
-          color: #666;
-          border: 1px solid #666;
-          padding: 10px;
-          margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        label {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin: 10px 0;
           transition: 200ms;
           &:hover {
-            color: var(--currentTheme);
-            border: 1px solid var(--currentTheme);
+            transform: scale(1.1);
+            cursor: pointer;
+          }
+          input[type="file"]::-webkit-file-upload-button { display: none; }
+          .photo-icon {
+            width: 30px;
+            height: 30px;
+          }
+          p {
+            font-size: 12px;
+            margin: 0;
+          }
+        }
+      }
+      .input {
+        color: #666;
+        background: transparent;
+        border: none;
+        margin: 10px 0;
+        &:focus { outline: none; }
+      }
+      .title-form {
+        height: 42px;
+        font-size: 35px;
+        margin-top: 30px;
+      }
+      .prologue-form {
+        font-size: 20px;
+        resize: none;
+      }
+      .tags-form {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        .hashtag-icon {
+          color: var(--currentTheme);
+          width: 30px;
+          height: 30px;
+          transition: 500ms;
+          &:hover {
+            color: #111;
+            background: var(--currentTheme);
+            border: none;
             cursor: pointer;
           }
         }
-        .insert-options {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          .option-icon {
+        input {
+          color: var(--currentTheme);
+          font-weight: 600;
+          border: none;
+          background: #222;
+          padding: 3px 10px;
+          width: calc((100% - 100px) / 5);
+          margin-right: 10px;
+          &:focus { outline: none; }
+        }
+      }
+      .main-form-insert {
+        width: 100%;
+        margin: 30px 0;
+        textarea {
+          color: #666;
+          // background: rgba(#000, 0.5);
+          background: transparent;
+          border: none;
+          padding: 8px 12px;
+          width: 100%;
+          resize: none;
+          &:focus { outline: none; }
+        }
+        .option-select-part {
+          .plus-icon {
             color: #666;
             border: 1px solid #666;
-            width: 50px;
-            height: 50px;
             padding: 10px;
-            margin: 20px 10px;
+            margin: 0 auto;
+            transition: 200ms;
             &:hover {
               color: var(--currentTheme);
               border: 1px solid var(--currentTheme);
               cursor: pointer;
             }
           }
+          .insert-options {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            .option-icon {
+              color: #666;
+              border: 1px solid #666;
+              width: 50px;
+              height: 50px;
+              padding: 10px;
+              margin: 20px 10px;
+              &:hover {
+                color: var(--currentTheme);
+                border: 1px solid var(--currentTheme);
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .preview-place {
+    padding-bottom: 100px;
+    .contents {
+      text-align: left;
+      width: 100%;
+      margin-top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      @media screen and (min-width: 480px) {
+        margin: 70px 0 0;
+      }
+      .top-img {
+        width: 100%;
+        @media screen and (min-width: 480px) {
+          min-width: 480px;
+          width: 80%;
+          max-width: 850px;
+          margin: 0 auto;
+        }
+      }
+      .no-img {
+        width: 100%;
+        height: 200px;
+        background: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #000;
+        p { margin: 0; }
+      }
+      .box {
+        color: #aaa;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0 10px;
+        @media screen and (min-width: 480px) {
+          min-width: 480px;
+          width: 80%;
+          max-width: 850px;
+        }
+        .title {
+          font-size: 35px;
+          margin: 20px 0 10px;
+        }
+        .status {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 15px;
+          .date { margin: 0 15px 0 0; }
+          .name {
+            margin: 0 15px 0 0;
+            code { color: var(--currentTheme); }
+          }
+        }
+        .prologue { margin: 0; }
+        .tags {
+          margin: 15px 0 0 0;
+          label {
+            margin: 0 0 15px;
+            span {
+              color: var(--currentTheme);
+              border: 1px solid var(--currentTheme);
+              opacity: 0.8;
+              padding: 2px 8px;
+              margin: 0 15px 15px 0;
+              transition: 150ms;
+              &:hover {
+                cursor: pointer;
+                color: #eee;
+                background: var(--currentTheme);
+                opacity: 0.8;
+              }
+            }
+          }
+        }
+        .index {
+          background: rgba(#222, 0.8);
+          padding: 20px 20px 20px 0;
+          margin: 40px 0;
+          ul { margin: 0; }
         }
       }
     }

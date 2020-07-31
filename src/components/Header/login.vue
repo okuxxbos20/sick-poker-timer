@@ -80,7 +80,7 @@
     </form>
     <div v-if="isFormOpen && isAlreadyLogin" class="user">
       <img v-if="userPhoto" :src="userPhoto" alt="userprofile">
-      <img v-else src="@/assets/img/avatar.png" alt="avator">
+      <img v-if="!userPhoto" src="@/assets/img/avatar.png" alt="avator">
       <p class="user-name">{{ userName }}</p>
       <p class="user-email">{{ userEmail }}</p>
       <p class="user-twitterid">{{ userTwitterid }}</p>
@@ -151,6 +151,7 @@ export default {
     googleLogin () {
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).then(result => {
+        console.log('google login');
         console.log(result.user);
       }).catch(error => {
         this.isError = true;
