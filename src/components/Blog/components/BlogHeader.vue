@@ -9,8 +9,8 @@
       type="search"
       placeholder="search"
     >
-    <div class="profile">
-      <img v-if="userPhoto" :src="userPhoto" @click="moveTo(uid)">
+    <div class="profile" @click="moveTo()">
+      <img v-if="userPhoto" :src="userPhoto">
       <img v-if="!userPhoto" src="@/assets/img/avatar.png">
     </div>
   </header>
@@ -42,15 +42,14 @@ export default {
       if (user) {
         this.userPhoto = user.photoURL;
         this.uid = user.uid;
-        console.log(user);
       } else {
         console.log('Please Login.');
       }
     });
   },
   methods: {
-    moveTo(uid) {
-      console.log(uid);
+    moveTo() {
+      this.$router.push({ name: 'profile'});
     }
   }
 }
@@ -96,6 +95,11 @@ header {
       width: 30px;
       height: 30px;
       border-radius: 50%;
+      transition: 200ms;
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.08);
+      }
     }
   }
 }

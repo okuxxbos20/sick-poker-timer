@@ -6,9 +6,12 @@
       <div class="box">
         <h3 class="title">{{ post.title }}</h3>
         <div class="status">
-          <p class="date">{{ post.modifiedAt | dayFormat }}</p>
-          <p class="name"><code>{{ post.author }}</code></p>
-          <HeartIcon class="heart-icon" :likes="post.likes"/>
+          <div class="left">
+            <p class="date">{{ post.modifiedAt | dayFormat }}</p>
+            <p class="name"><code>{{ post.author }}</code></p>
+            <HeartIcon :likes="post.likes"/>
+          </div>
+          <BookmarkIcon class="bookmark-icon" />
         </div>
         <p class="prologue">{{ post.prologue }}</p>
         <div v-if="post.tags.length > 0" class="tags">
@@ -34,9 +37,10 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import BlogHeader from './components/BlogHeader';
 import HeartIcon from '@/assets/icons/HeartIcon';
+import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 
 export default {
-  components: { BlogHeader, HeartIcon },
+  components: { BlogHeader, HeartIcon, BookmarkIcon },
   created() {
     const id = this.$route.path.substr(9);
     const db = firebase.firestore();
@@ -124,12 +128,19 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 15px;
-        .date { margin: 0 15px 0 0; }
-        .name {
-          margin: 0 15px 0 0;
-          code { color: var(--currentTheme); }
+        .left {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .date { margin: 0 15px 0 0; }
+          .name {
+            margin: 0 15px 0 0;
+            code { color: var(--currentTheme); }
+          }
         }
+        .bookmark-icon { margin: 0; }
       }
       .prologue { margin: 0; }
       .tags {

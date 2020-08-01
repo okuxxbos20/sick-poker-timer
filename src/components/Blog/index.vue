@@ -2,11 +2,20 @@
   <div class="blog">
     <BlogHeader />
     <main>
-      <div v-for="(article, idx) in articles" :key="idx" class="card">
+      <div
+        v-for="(article, idx) in articles"
+        :key="idx"
+        class="card"
+      >
         <h3 class="title">{{ article.title }}</h3>
         <div class="status">
           <code class="date">{{ article.createdAt | dayFormat }}</code>
-          <HeartIcon class="heart-icon" :likes="article.likes"/>
+          <div class="right">
+            <div class="icon" @click="addLikes(article.id)">
+              <HeartIcon class="heart-icon" :likes="article.likes" />
+            </div>
+            <BookmarkIcon class="bookmark-icon" />
+          </div>
         </div>
         <img
           v-if="!article.img"
@@ -17,8 +26,8 @@
           v-else
           class="posted-img"
           :src="article.img"
-          @click="moveTo(article.id)"
           alt="postImg"
+          @click="moveTo(article.id)"
         >
         <p class="sentence">{{ article.prologue | shortenPreview }}</p>
       </div>
@@ -31,9 +40,10 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import BlogHeader from './components/BlogHeader';
 import HeartIcon from '@/assets/icons/HeartIcon';
+import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 
 export default {
-  components: { BlogHeader, HeartIcon },
+  components: { BlogHeader, HeartIcon, BookmarkIcon },
   filters: {
     dayFormat(time) {
       const sec = time.seconds;
@@ -43,7 +53,11 @@ export default {
       const thisYear = new Date().getFullYear();
       year = (year === thisYear) ? '' : year;
       const monthNum = date.getMonth();
-      const monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthArr = [
+        'Jan', 'Feb', 'Mar', 'Apr',
+        'May', 'Jun', 'Jul', 'Aug',
+        'Sep', 'Oct', 'Nov', 'Dec'
+      ];
       const month = monthArr[monthNum];
       const day = date.getDate();
       const result = `${year} ${month} ${day}`
@@ -70,10 +84,14 @@ export default {
         this.articles.push(items);
       });
     });
+    console.log(this.articles);
   },
   methods: {
     moveTo(id) {
       this.$router.push({ name: 'article', params: { id } });
+    },
+    addLikes(id) {
+      console.log(id);
     }
   }
 }
@@ -90,7 +108,7 @@ export default {
       padding: 70px 0 0;
     }
     .card {
-      background: #333;
+      background: #222;
       width: 100%;
       max-width: 550px;
       margin: 30px 0;
@@ -101,21 +119,24 @@ export default {
         margin: 10px 10px 0 10px;
       }
       .status {
-        position: relative;
         height: 22px;
         margin-bottom: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         .date {
           color: #aaa;
           font-size: 14px;
           margin-left: 10px;
-          position: absolute;
-          top: 2px;
-          left: 0;
         }
-        .heart-icon {
-          position: absolute;
-          top: -1px;
-          right: 8px;
+        .right {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          .icon { .heart-icon { margin: 1px 10px 0 0; } }
+          .bookmark-icon { margin: 0 10px 0 0; }
         }
       }
       img {
