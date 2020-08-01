@@ -12,9 +12,9 @@
         </div>
         <p class="prologue">{{ post.prologue }}</p>
         <div v-if="post.tags.length > 0" class="tags">
-          <span v-for="(tag, idx) in post.tags" :key="idx">
-            #{{ tag }}
-          </span>
+          <label v-for="(tag, idx) in post.tags" :key="idx">
+            <span>#{{ tag }}</span>
+          </label>
         </div>
         <div v-if="post.index.length > 0" class="index">
           <ul>
@@ -39,8 +39,15 @@ export default {
   components: { BlogHeader, HeartIcon },
   created() {
     const id = this.$route.path.substr(9);
-    firebase.firestore().collection('article').doc(id)
-      .get().then((article) => this.post = article.data());
+    const db = firebase.firestore();
+    db.collection('article').doc(id).get()
+      .then(article => {
+        this.post = article.data();
+        console.log(this.post);
+      })
+      .catch(error => {
+        console.log(error);
+      })
   },
   filters: {
     dayFormat(time) {
@@ -49,7 +56,11 @@ export default {
       const date = new Date(sec * 1000 + nano / 1000000);
       const year = date.getFullYear();
       const monthNum = date.getMonth();
-      const monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthArr = [
+        'Jan', 'Feb', 'Mar', 'Apr',
+        'May', 'Jun', 'Jul', 'Aug',
+        'Sep', 'Oct', 'Nov', 'Dec'
+      ];
       const month = monthArr[monthNum];
       const day = date.getDate();
       const result = `${year} ${month} ${day}`
@@ -65,7 +76,7 @@ export default {
   },
   data() {
     return {
-      post: null
+      post: () => ({})
     }
   }
 }
@@ -120,25 +131,24 @@ export default {
           code { color: var(--currentTheme); }
         }
       }
-      .prologue {
-        margin: 0;
-      }
+      .prologue { margin: 0; }
       .tags {
-        margin: 15px 0 0 0;
-        display: flex;
-        flex-direction: row;
-        span {
-          color: var(--currentTheme);
-          border: 1px solid var(--currentTheme);
-          opacity: 0.8;
-          padding: 2px 8px;
-          margin: 0 15px 0 0;
-          transition: 150ms;
-          &:hover {
-            cursor: pointer;
-            color: #eee;
-            background: var(--currentTheme);
+        margin: 15px 0 0;
+        label {
+          margin: 0 0 15px;
+          span {
+            color: var(--currentTheme);
+            border: 1px solid var(--currentTheme);
             opacity: 0.8;
+            padding: 2px 8px;
+            margin: 0 15px 0 0;
+            transition: 150ms;
+            &:hover {
+              cursor: pointer;
+              color: #eee;
+              background: var(--currentTheme);
+              opacity: 0.8;
+            }
           }
         }
       }

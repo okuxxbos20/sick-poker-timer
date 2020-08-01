@@ -70,10 +70,14 @@
       </form>
     </div>
     <Preview v-show="isPreviewMode" :article-data="articleData" />
+    <div class="submit">
+      <button type="button" @click="postArticle()">post?</button>
+    </div>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase/app';
 import ModeSwitch from './components/ModeSwitch';
 import PhotoIcon from '@/assets/icons/PhotoIcon';
 import HashtagIcon from '@/assets/icons/HashtagIcon';
@@ -93,8 +97,8 @@ export default {
   data() {
     return {
       articleData: {
-        author: '',
-        createdAt: '',
+        author: 'Please Login',
+        createdAt: new Date(),
         img: '',
         index: [],
         likes: 0,
@@ -135,16 +139,22 @@ export default {
     checkFile(file) {
       let result = true;
       const sizeLimit = 5000000;
-      if (!file) {
-        result = false;
-      }
+      if (!file) { result = false; }
       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
         result = false;
       }
-      if (file.size > sizeLimit) {
-        result = false;
-      }
+      if (file.size > sizeLimit) { result = false; }
       return result
+    },
+    async postArticle() {
+      const db = firebase.firestore();
+      await db.collection('article').add(this.articleData)
+      .then(article => {
+        console.log(article);
+        this.articleData = {};
+      }).catch(error => {
+        console.log(error);
+      })
     }
   }
 }
@@ -317,6 +327,26 @@ export default {
           }
         }
       }
+    }
+  }
+  .submit {
+    margin: 20px 0;
+    button {
+      color: var(--currentTheme);
+      margin: 0 auto;
+      background: transparent;
+      border: 1px solid var(--currentTheme);
+      border-radius: 8px;
+      width: 250px;
+      padding: 5px 10px;
+      transition: 200ms;
+      &:hover {
+        color: #111;
+        background: var(--currentTheme);
+        border: none;
+        cursor: pointer;
+      }
+      &:focus { outline: none; }
     }
   }
 }

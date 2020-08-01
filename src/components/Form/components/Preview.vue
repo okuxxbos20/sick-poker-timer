@@ -74,7 +74,7 @@ export default {
       if (user) {
         this.articleData.author = user.displayName;
       } else {
-        this.articleData.author = 'your name';
+        this.articleData.author = 'Please Login';
       }
     });
   }
@@ -142,7 +142,7 @@ export default {
       }
       .prologue { margin: 0; }
       .tags {
-        margin: 15px 0 0 0;
+        margin: 15px 0 0;
         label {
           margin: 0 0 15px;
           span {

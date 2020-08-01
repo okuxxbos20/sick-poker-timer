@@ -9,24 +9,48 @@
       type="search"
       placeholder="search"
     >
+    <div class="profile">
+      <img v-if="userPhoto" :src="userPhoto" @click="moveTo(uid)">
+      <img v-if="!userPhoto" src="@/assets/img/avatar.png">
+    </div>
   </header>
 </template>
 
 <script>
+import firebase from 'firebase/app';
 import ArrowleftIcon from '@/assets/icons/ArrowleftIcon';
 
 export default {
   name: 'BlogHeader',
   components: { ArrowleftIcon },
-  data() {
-    return {
-      searchQuery: '',
-    }
-  },
   props: {
     path: {
       type: String,
+      required: false,
       default: '/'
+    }
+  },
+  data() {
+    return {
+      searchQuery: '',
+      userPhoto: '',
+      uid: ''
+    }
+  },
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.userPhoto = user.photoURL;
+        this.uid = user.uid;
+        console.log(user);
+      } else {
+        console.log('Please Login.');
+      }
+    });
+  },
+  methods: {
+    moveTo(uid) {
+      console.log(uid);
     }
   }
 }
@@ -64,6 +88,15 @@ header {
     border-radius: 20px;
     padding: 14px;
     &:focus { outline: none; }
+  }
+  .profile {
+    position: absolute;
+    right: 20px;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
   }
 }
 </style>
