@@ -7,18 +7,18 @@
     <div v-show="!isPreviewMode" class="editor-place">
       <form>
         <div class="flame">
-          <div v-if="!articleData.img" class="upload-box">
+          <div v-if="!previewImg" class="upload-box">
             <label>
               <PhotoIcon class="photo-icon" />
               <p>Upload Photo.</p>
               <input ref="file" type="file" @change="imgUpload">
             </label>
           </div>
-          <div v-if="articleData.img" class="uploaded-box">
-            <img :src="articleData.img" alt="uploaded-img">
+          <div v-if="previewImg" class="uploaded-box">
+            <img :src="previewImg" alt="uploaded-img">
           </div>
         </div>
-        <div  v-if="articleData.img" class="reupload">
+        <div v-if="previewImg" class="reupload">
           <label>
             <PhotoIcon class="photo-icon" />
             <p>Re-Upload ?</p>
@@ -69,7 +69,11 @@
         </div>
       </form>
     </div>
-    <Preview v-show="isPreviewMode" :article-data="articleData" />
+    <Preview
+      v-show="isPreviewMode"
+      :article-data="articleData"
+      :preview-img="previewImg"
+    />
     <div class="submit">
       <button type="button" @click="postArticle()">post?</button>
     </div>
@@ -107,6 +111,8 @@ export default {
         tags: [],
         title: ''
       },
+      uploadFile: '',
+      previewImg: '',
       tagsPlaceholder: ['set', 'up', 'to', 'five', 'tags'],
       isOptionOpen: false,
       isPreviewMode: false
@@ -125,7 +131,8 @@ export default {
       const file = files[0];
       if (this.checkFile(file)) {
         const picture = await this.getBase64(file);
-        this.articleData.img = picture;
+        this.uploadFile = file;
+        this.previewImg = picture;
       }
     },
     getBase64(file) {
@@ -154,7 +161,21 @@ export default {
         this.articleData = {};
       }).catch(error => {
         console.log(error);
-      })
+      });
+      const file = this.uploadFile;
+      const storage = firebase.storage().ref();
+      const uploadTask = storage.child(`article/${file.name}`).put(file);
+      uploadTask.on('state_changed',
+        (snapshot) => { console.log('snapshot', snapshot) },
+        (error) => { console.log('error', error) },
+        () => {
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            console.log('File available at', downloadURL)
+            // downloadURLが渡せない
+            this.articleData.img = downloadURL;
+          });
+        }
+      )
     }
   }
 }

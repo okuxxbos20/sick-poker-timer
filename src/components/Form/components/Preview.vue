@@ -2,12 +2,12 @@
   <div class="preview-place">
     <div class="contents">
       <img
-        v-if="articleData.img"
+        v-if="previewImg"
         class="top-img"
-        :src="articleData.img"
+        :src="previewImg"
       >
       <div
-        v-if="!articleData.img"
+        v-if="!previewImg"
         class="no-img"
       >
         <PhotoIcon />
@@ -67,6 +67,11 @@ export default {
       type: Object,
       required: false,
       default: () => ({})
+    },
+    previewImg: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   mounted() {
