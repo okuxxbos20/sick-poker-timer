@@ -97,7 +97,7 @@ export default {
     flex-direction: column;
     align-items: center;
     @media screen and (min-width: 480px) {
-      margin: 70px 0 0;
+      margin: 30px 0 0;
     }
     .top-img {
       width: 100%;
@@ -109,7 +109,14 @@ export default {
       }
     }
     .no-img {
+      @media screen and (min-width: 480px) {
+        min-width: 480px;
+        width: 80%;
+        max-width: 850px;
+        margin: 0 auto;
+      }
       width: 100%;
+      max-width: 800px;
       height: 200px;
       background: #333;
       display: flex;

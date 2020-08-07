@@ -154,28 +154,24 @@ export default {
       return result
     },
     async postArticle() {
+      const file = this.uploadFile;
+      const storage = firebase.storage().ref();
       const db = firebase.firestore();
-      await db.collection('article').add(this.articleData)
-      .then(article => {
-        console.log(article);
-        this.articleData = {};
+
+      await storage.child(`article/${file.name}`).put(file)
+      .then(snapshot => {
+        snapshot.ref.getDownloadURL().then((url) => {
+          this.articleData.img = url;
+          db.collection('article').add(this.articleData)
+          .then(() => {
+            console.log('success to upload');
+          }).catch(error => {
+            console.log(error);
+          });
+        });
       }).catch(error => {
         console.log(error);
       });
-      const file = this.uploadFile;
-      const storage = firebase.storage().ref();
-      const uploadTask = storage.child(`article/${file.name}`).put(file);
-      uploadTask.on('state_changed',
-        (snapshot) => { console.log('snapshot', snapshot) },
-        (error) => { console.log('error', error) },
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            console.log('File available at', downloadURL)
-            // downloadURLが渡せない
-            this.articleData.img = downloadURL;
-          });
-        }
-      )
     }
   }
 }
