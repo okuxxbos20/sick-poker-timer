@@ -14,7 +14,9 @@
             <div class="icon" @click="addLikes(article.id)">
               <HeartIcon class="heart-icon" :likes="article.likes" />
             </div>
-            <BookmarkIcon class="bookmark-icon" />
+            <div class="icon" @click="addBookmark(article.id)">
+              <BookmarkIcon class="bookmark-icon" />
+            </div>
           </div>
         </div>
         <img
@@ -73,7 +75,8 @@ export default {
   },
   data() {
     return {
-      articles: []
+      articles: [],
+      uid: ''
     }
   },
   created() {
@@ -84,7 +87,16 @@ export default {
         this.articles.push(items);
       });
     });
-    console.log(this.articles);
+  },
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user.uid);
+        this.uid = user.uid;
+      } else {
+        console.log('Please Login.');
+      }
+    });
   },
   methods: {
     moveTo(id) {
@@ -92,6 +104,17 @@ export default {
     },
     addLikes(id) {
       console.log(id);
+      alert('success to like.')
+    },
+    addBookmark(id) {
+      console.log(id);
+      firebase.firestore().collection('users').doc(this.uid).update({
+        bookmarks: firebase.firestore.FieldValue.arrayUnion(id)
+      }).then(() => {
+        console.log('success to add bookmarks!');
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
 }

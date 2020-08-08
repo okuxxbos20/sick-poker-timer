@@ -4,6 +4,7 @@
       <img v-if="!user.userPhoto" src="@/assets/img/avatar.png">
       <img v-if="user.userPhoto" :src="user.userPhoto">
       <p class="name">{{ user.uName }}</p>
+      <p class="email">{{ user.uEmail }}</p>
     </div>
     <div class="switch">
       <div
@@ -29,7 +30,7 @@
       </div>
     </div>
     <div v-if="switchNum === 1" class="bookmarks">
-      <table>
+      <table v-if="user.bookmarks.length > 0">
         <tr
           v-for="(bookmark, idx) in bookmarkArticles"
           :key="idx"
@@ -40,6 +41,7 @@
           <td class="likes"><HeartIcon :likes="bookmark.likes" /></td>
         </tr>
       </table>
+      <p v-else>you have no bookmarks.</p>
     </div>
   </div>
 </template>
@@ -56,6 +58,7 @@ export default {
         uid: '',
         uName: '',
         userPhoto: '',
+        uEmail: '',
         bookmarks: []
       },
       bookmarkArticles: [],
@@ -67,8 +70,8 @@ export default {
       if (user) {
         this.user.uid = user.uid;
         this.user.userPhoto = user.photoURL;
+        this.user.uEmail = user.email;
         this.user.uName = (user.displayName !== null) ? user.displayName : 'No Name';
-        console.log(this.user);
         this.readBookmarks(this.user.uid);
       } else {
         console.log('Please Login.');
@@ -79,7 +82,6 @@ export default {
     async readBookmarks(uid) {
       await firebase.firestore().collection('users').doc(uid).get()
         .then(users => {
-          console.log(users.data());
           this.user.bookmarks = users.data().bookmarks;
           this.user.bookmarks.map((articleid) => {
             firebase.firestore().collection('article').doc(articleid).get()
@@ -91,7 +93,6 @@ export default {
                   img: article.data().img,
                 }
                 this.bookmarkArticles.push(atricleInfo);
-                console.log(atricleInfo);
               })
               .catch(error => {
                 console.log(error);
@@ -174,8 +175,11 @@ export default {
           cursor: pointer;
         }
         .photo {
+          height: 100%;
           img {
-            height: 40px;
+            height: 100%;
+            width: 75px;
+            object-fit: cover;
           }
         }
         .likes {

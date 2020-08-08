@@ -4,29 +4,29 @@
       @click="isFormOpen = false"
       :class="{ overlay: isFormOpen }"
     ></div>
-    <p v-if="!isAlreadyLogin" class="login-gate" @click="formOpen ()">Login?</p>
+    <p v-if="!isAlreadyLogin" class="login-gate" @click="formOpen()">Login?</p>
     <img
       v-if="userPhoto && isAlreadyLogin"
       :src="userPhoto"
       alt="userprofile"
       class="login-icon"
-      @click="formOpen ()"
+      @click="formOpen()"
     >
     <img
       v-if="!userPhoto && isAlreadyLogin"
       src="@/assets/img/avatar.png"
       alt="avator"
       class="login-icon"
-      @click="formOpen ()"
+      @click="formOpen()"
     >
-    <form v-if="isFormOpen && !isAlreadyLogin" @submit.prevent="submitForm ()" action="index.html" method="post">
+    <form v-if="isFormOpen && !isAlreadyLogin" @submit.prevent="submitForm()" action="index.html" method="post">
       <div v-if="!isAlreadyLogin">
         <h3>{{ loginOrSignup }}</h3>
         <div class="sns-login">
-          <li @click="googleLogin ()"><GoogleIcon /></li>
-          <li @click="facebookLogin ()"><FacebookIcon /></li>
+          <li @click="googleLogin()"><GoogleIcon /></li>
+          <!-- <li @click="facebookLogin ()"><FacebookIcon /></li>
           <li @click="githubLogin ()"><GithubIcon /></li>
-          <li @click="twitterLogin ()"><TwitterIcon /></li>
+          <li @click="twitterLogin ()"><TwitterIcon /></li> -->
         </div>
         <div class="form-group">
           <label>Email</label>
@@ -70,7 +70,7 @@
         <button type="submit" name="button">{{ loginOrSignup }}</button>
         <p class="signup-sentence">{{ bottomMessage }}
           <span
-            @click="switchStatus ()"
+            @click="switchStatus()"
             :class="{ error: isError }"
           >
             {{ anotherGate }}.
@@ -79,12 +79,22 @@
       </div>
     </form>
     <div v-if="isFormOpen && isAlreadyLogin" class="user">
-      <img v-if="userPhoto" :src="userPhoto" alt="userprofile">
-      <img v-if="!userPhoto" src="@/assets/img/avatar.png" alt="avator">
+      <img
+        v-if="userPhoto"
+        :src="userPhoto"
+        alt="userprofile"
+        @click="moveTo()"
+      >
+      <img
+        v-if="!userPhoto"
+        src="@/assets/img/avatar.png"
+        alt="avator"
+        @click="moveTo()"
+      >
       <p class="user-name">{{ userName }}</p>
       <p class="user-email">{{ userEmail }}</p>
-      <p class="user-twitterid">{{ userTwitterid }}</p>
-      <p class="logout-gate" @click="logoutUser ()">Log out</p>
+      <!-- <p class="user-twitterid">{{ userTwitterid }}</p> -->
+      <p class="logout-gate" @click="logoutUser()">Log out</p>
     </div>
   </div>
 </template>
@@ -92,13 +102,18 @@
 <script>
 import firebase from 'firebase';
 import GoogleIcon from '@/assets/icons/GoogleIcon';
-import FacebookIcon from '@/assets/icons/FacebookIcon';
-import GithubIcon from '@/assets/icons/GithubIcon';
-import TwitterIcon from '@/assets/icons/TwitterIcon';
+// import FacebookIcon from '@/assets/icons/FacebookIcon';
+// import GithubIcon from '@/assets/icons/GithubIcon';
+// import TwitterIcon from '@/assets/icons/TwitterIcon';
 
 export default {
   name: 'Login',
-  components: { GoogleIcon, FacebookIcon, GithubIcon, TwitterIcon },
+  components: {
+    GoogleIcon,
+    // FacebookIcon,
+    // GithubIcon,
+    // TwitterIcon
+  },
   data () {
     return {
       isFormOpen: false,
@@ -117,7 +132,7 @@ export default {
       // user infoomation
       userName: '',
       userEmail: '',
-      userTwitterid: '',
+      // userTwitterid: '',
       userPhoto: ''
     }
   },
@@ -128,15 +143,6 @@ export default {
         this.userName = user.displayName;
         this.userEmail = user.email;
         this.userPhoto = user.photoURL;
-        console.log('login');
-        console.log(user);
-        console.log(`name: ${user.displayName}`);
-        console.log(`email: ${user.email}`);
-        console.log(`emailVerified: ${user.emailVerified}`);
-        console.log(`photoURL: ${user.photoURL}`);
-        console.log(`isAnonymous: ${user.isAnonymous}`);
-        console.log(`uid: ${user.uid}`);
-        console.log(`providerData: ${user.providerData}`);
       } else {
         this.isAlreadyLogin = false;
         console.log('logout');
@@ -158,34 +164,34 @@ export default {
         this.errorMessage = error.message;
       });
     },
-    facebookLogin () {
-      const provider = new firebase.auth.FacebookAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(result => {
-        console.log(result.user);
-      }).catch(error => {
-        this.isError = true;
-        this.errorMessage = error.message;
-      });
-    },
-    githubLogin () {
-      const provider = new firebase.auth.GithubAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(result => {
-        console.log(result.user);
-      }).catch(error => {
-        this.isError = true;
-        this.errorMessage = error.message;
-      });
-    },
-    twitterLogin () {
-      const provider = new firebase.auth.TwitterAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(userCredential => {
-        console.log(`this is ${userCredential.additionalUserInfo.username}`);
-        this.userTwitterid += `@${userCredential.additionalUserInfo.username}`
-      }).catch(error => {
-        this.isError = true;
-        this.errorMessage = error.message;
-      });
-    },
+    // facebookLogin () {
+    //   const provider = new firebase.auth.FacebookAuthProvider();
+    //   firebase.auth().signInWithPopup(provider).then(result => {
+    //     console.log(result.user);
+    //   }).catch(error => {
+    //     this.isError = true;
+    //     this.errorMessage = error.message;
+    //   });
+    // },
+    // githubLogin () {
+    //   const provider = new firebase.auth.GithubAuthProvider();
+    //   firebase.auth().signInWithPopup(provider).then(result => {
+    //     console.log(result.user);
+    //   }).catch(error => {
+    //     this.isError = true;
+    //     this.errorMessage = error.message;
+    //   });
+    // },
+    // twitterLogin () {
+    //   const provider = new firebase.auth.TwitterAuthProvider();
+    //   firebase.auth().signInWithPopup(provider).then(userCredential => {
+    //     console.log(`this is ${userCredential.additionalUserInfo.username}`);
+    //     this.userTwitterid += `@${userCredential.additionalUserInfo.username}`
+    //   }).catch(error => {
+    //     this.isError = true;
+    //     this.errorMessage = error.message;
+    //   });
+    // },
     submitForm () {
       if (this.isLoginForm && !this.isAlreadyLogin) {
         this.loginUser ();
@@ -195,8 +201,23 @@ export default {
       }
     },
     registerUser () {
-      console.log(firebase);
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch((error) => {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+      .then((user) => {
+        firebase.firestore().collection('users').doc(user.user.uid).set({
+          name: '',
+          img: '',
+          uid: user.user.uid,
+          email: this.email,
+          bookmarks: [],
+          likedPost: []
+        }).then(() => {
+          console.log('success to create newUser.');
+        }).catch((error) => {
+          console.log(error);
+        })
+      })
+      .catch((error) => {
+        console.log(error);
         this.isError = true;
         this.errorMessage = error.message;
         this.errorCode = error.code;
@@ -226,6 +247,9 @@ export default {
         this.anotherGate = 'Login';
         this.bottomMessage = 'Alerady have account?';
       }
+    },
+    moveTo() {
+      this.$router.push({ name: 'profile'});
     }
   }
 }
@@ -300,12 +324,8 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        input {
-          margin: 2px 6px;
-        }
-        label {
-          margin: 0;
-        }
+        input { margin: 2px 6px; }
+        label { margin: 0; }
       }
     }
     .sns-login {
